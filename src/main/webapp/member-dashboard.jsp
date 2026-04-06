@@ -8,18 +8,13 @@
     <title>Dashboard | Evently</title>
 </head>
 <body class="bg-slate-100 min-h-screen">
-<%
-    String memberName = (String) request.getAttribute("memberName");
-    if (memberName == null || memberName.trim().isEmpty()) {
-        memberName = "Member";
-    }
-%>
+
 
 <header class="bg-white border-b border-gray-200 px-5 sm:px-8 py-4">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
             <h1 class="text-2xl font-bold text-indigo-600">Evently Dashboard</h1>
-            <p class="text-gray-500">Welcome, <%= memberName %></p>
+            <p class="text-gray-500">Welcome, ${user.username}</p>
         </div>
         <a href="index.jsp" class="text-sm text-indigo-600 hover:text-indigo-700">Logout</a>
     </div>
@@ -53,7 +48,7 @@
                     <td class="px-4 py-3">12 Apr, 10:00 AM</td>
                     <td class="px-4 py-3">Main Hall</td>
                     <td class="px-4 py-3">
-                        <form method="post" action="joinEvent.jsp">
+                        <form method="post" action="joinEvent">
                             <input type="hidden" name="eventId" value="101">
                             <button type="submit" class="bg-indigo-600 text-white px-3 py-1.5 rounded-md hover:bg-indigo-700 transition">Join</button>
                         </form>
@@ -64,7 +59,7 @@
                     <td class="px-4 py-3">18 Apr, 2:00 PM</td>
                     <td class="px-4 py-3">Student Center</td>
                     <td class="px-4 py-3">
-                        <form method="post" action="joinEvent.jsp">
+                        <form method="post" action="joinEvent">
                             <input type="hidden" name="eventId" value="102">
                             <button type="submit" class="bg-indigo-600 text-white px-3 py-1.5 rounded-md hover:bg-indigo-700 transition">Join</button>
                         </form>
@@ -75,7 +70,7 @@
                     <td class="px-4 py-3">25 Apr, 9:30 AM</td>
                     <td class="px-4 py-3">Sports Ground</td>
                     <td class="px-4 py-3">
-                        <form method="post" action="joinEvent.jsp">
+                        <form method="post" action="joinEvent">
                             <input type="hidden" name="eventId" value="103">
                             <button type="submit" class="bg-indigo-600 text-white px-3 py-1.5 rounded-md hover:bg-indigo-700 transition">Join</button>
                         </form>

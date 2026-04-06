@@ -12,6 +12,15 @@
         <p class="text-gray-500">Welcome back! Please login.</p>
     </div>
 
+    <% String successMessage = (String) request.getAttribute("successMessage"); %>
+    <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+    <% if (successMessage != null) { %>
+        <div class="mb-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-sm"><%= successMessage %></div>
+    <% } %>
+    <% if (errorMessage != null) { %>
+        <div class="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm"><%= errorMessage %></div>
+    <% } %>
+
     <form action="loginProcess" method="POST" class="space-y-6">
         <div>
             <label class="block text-sm font-medium text-gray-700">Email Address</label>
