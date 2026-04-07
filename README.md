@@ -1,6 +1,6 @@
 # Evently Demo
 
-Evently is a small JSP and Servlet-based web application for managing campus events. It supports user registration, login, role-based dashboards, and logout, backed by a PostgreSQL database.
+Evently is a small JSP and Servlet-based web application for managing campus events. It supports user registration, login, role-based dashboards, and logout, backed by a PostgreSQL database. App Screenshots are at the bottom of this file
 
 ## Features
 
