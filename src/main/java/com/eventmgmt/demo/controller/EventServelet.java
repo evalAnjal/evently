@@ -12,7 +12,7 @@ import java.util.List;
 import com.eventmgmt.demo.DAO.EventDAO;
 import com.eventmgmt.demo.model.Event;
 
-@WebServlet("/dashboard")
+@WebServlet("/Member-dashboard")
 public class EventServelet extends HttpServlet{
     private EventDAO eventDAO = new EventDAO();
 
@@ -21,6 +21,9 @@ public class EventServelet extends HttpServlet{
 
         request.setAttribute("events", eventList);
 
-        request.getRequestDispatcher("/member-dashboard.jsp").forward(request, response);
+       request.getRequestDispatcher("/member-dashboard.jsp").forward(request, response);
+       //redirecting to member-dashboard.jsp
+        //response.sendRedirect(request.getContextPath() + "/member-dashboard.jsp");
+
     }
 }
