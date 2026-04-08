@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// this is a new feature
 public class EventDAO {
     public List<Event> getAllApprovedEvents(){
         List<Event> events = new ArrayList<>();
