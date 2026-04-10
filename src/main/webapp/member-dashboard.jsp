@@ -14,16 +14,32 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
             <h1 class="text-2xl font-bold text-indigo-600">Evently Dashboard</h1>
-            <p class="text-gray-500">Welcome, ${user.username}</p>
+            <p class="text-gray-500">Welcome, ${user.id}</p>
+
         </div>
         <a href="<%= request.getContextPath() %>/logout" class="text-sm text-indigo-600 hover:text-indigo-700">Logout</a>
     </div>
 </header>
 
+
 <main class="px-5 sm:px-8 py-6">
     <div class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
             <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Available Events</h2>
+            <!--Registration Failed Message from Backend
+
+            http://localhost:8080/Member-dashboard?error=registration_failed
+
+            -->
+            <% String errorMessage = request.getParameter("error"); %>
+            <% if ("registration_failed".equals(errorMessage)) { %>
+                <div class="rounded-md bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm">
+                   Oppss..! Something Went Wrong!!
+                </div>
+            <% } %>
+
+            
+        
             <input
                 id="eventSearch"
                 type="text"
@@ -48,7 +64,7 @@
                 <td class="px-6 py-4">${event.title}</td>
                 <td class="px-6 py-4">${event.location}</td>
                 <td class="px-6 py-4">
-                    <form action="" method="post">
+                    <form action="/joinEvent" method="post">
                         <input type="hidden" name="eventId" value = "${event.id}">
                         <input type="hidden" name="userId" value = "${user.id}">
 

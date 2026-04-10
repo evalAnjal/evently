@@ -50,15 +50,14 @@ public class joinEventServlet extends HttpServlet {
     EventDAO eDAO = new EventDAO();
     List<Event> allEvents = eDAO.getAllApprovedEvents();
     
-    // 2. Fetch IDs of events THIS user joined
     registrationDAO regDAO = new registrationDAO();
     List<Integer> joinedIds = regDAO.getJoinedEventIds(user.getId());
 
-    // 3. Put both in the request
+  
     request.setAttribute("events", allEvents);
     request.setAttribute("joinedIds", joinedIds);
 
-    request.getRequestDispatcher("/member-dashboard.jsp").forward(request, response);
+    request.getRequestDispatcher("/Member-dashboard").forward(request, response);
 }
 }
 
