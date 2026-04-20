@@ -79,7 +79,8 @@
                     <th class="py-2 pr-4">Location</th>
                     <th class="py-2 pr-4">Participants</th>
                     <th class="py-2 pr-4">Registrations</th>
-                    <th class="py-2">Status</th>
+                    <th class="py-2 pr-4">Status</th>
+                    <th class="py-2">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -92,18 +93,68 @@
                         <td class="py-2 pr-4">${event.location}</td>
                         <td class="py-2 pr-4">${participantCounts[event.id] == null ? 0 : participantCounts[event.id]}</td>
                         <td class="py-2 pr-4">${registrationCounts[event.id] == null ? 0 : registrationCounts[event.id]}</td>
-                        <td class="py-2">${event.status}</td>
+                        <td class="py-2 pr-4">${event.status}</td>
+                        <td class="py-2">
+                            <a
+                                href="${pageContext.request.contextPath}/admin-dashboard?eventId=${event.id}#memberDetails"
+                                class="inline-flex items-center rounded-md border border-indigo-200 px-3 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-50">
+                                View Details
+                            </a>
+                        </td>
                     </tr>
                 </c:forEach>
                 <c:if test="${empty events}">
                     <tr>
-                        <td colspan="6" class="py-3 text-slate-500">No events to show.</td>
+                        <td colspan="7" class="py-3 text-slate-500">No events to show.</td>
                     </tr>
                 </c:if>
                 </tbody>
             </table>
         </div>
     </section>
+
+    <c:if test="${selectedEventId != null}">
+        <section id="memberDetails" class="mt-6 bg-white border border-blue-100 rounded-lg p-5 sm:p-6 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                <h2 class="text-lg font-medium text-indigo-700">
+                    Joined Members: ${selectedEvent.title}
+                </h2>
+                <a href="${pageContext.request.contextPath}/admin-dashboard" class="text-xs text-indigo-700 hover:text-indigo-900">Clear</a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                    <tr class="text-left border-b border-blue-100 bg-blue-50/60">
+                        <th class="py-2 pr-4">Member ID</th>
+                        <th class="py-2 pr-4">Username</th>
+                        <th class="py-2 pr-4">Email</th>
+                        <th class="py-2 pr-4">Phone</th>
+                        <th class="py-2 pr-4">Age</th>
+                        <th class="py-2">Preference</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="member" items="${selectedEventMembers}">
+                        <tr class="border-b border-blue-50 hover:bg-blue-50/40">
+                            <td class="py-2 pr-4">${member.userId}</td>
+                            <td class="py-2 pr-4">${member.username}</td>
+                            <td class="py-2 pr-4">${member.email}</td>
+                            <td class="py-2 pr-4">${member.phone}</td>
+                            <td class="py-2 pr-4">${member.age}</td>
+                            <td class="py-2">${member.preference}</td>
+                        </tr>
+                    </c:forEach>
+                    <c:if test="${empty selectedEventMembers}">
+                        <tr>
+                            <td colspan="6" class="py-3 text-slate-500">No members have joined this event yet.</td>
+                        </tr>
+                    </c:if>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </c:if>
 
     <div id="createModal" class="hidden fixed inset-0 z-40">
         <div id="modalBackdrop" class="absolute inset-0 bg-black/40"></div>

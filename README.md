@@ -71,8 +71,20 @@ CREATE TABLE registrations (
 	id SERIAL PRIMARY KEY,
 	user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
 	event_id INT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+	phone VARCHAR(25),
+	age INT,
+	preference VARCHAR(80),
 	UNIQUE (user_id, event_id)
 );
+```
+
+If your database already has `registrations` without these columns, run:
+
+```sql
+ALTER TABLE registrations
+ADD COLUMN IF NOT EXISTS phone VARCHAR(25),
+ADD COLUMN IF NOT EXISTS age INT,
+ADD COLUMN IF NOT EXISTS preference VARCHAR(80);
 ```
 
 ## Run Locally

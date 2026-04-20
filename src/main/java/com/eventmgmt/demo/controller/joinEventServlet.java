@@ -22,8 +22,12 @@ public class joinEventServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String eventIdStr = request.getParameter("eventId");
         String userIdStr = request.getParameter("userId");
+        String phone = request.getParameter("phone");
+        String ageStr = request.getParameter("age");
+        String preference = request.getParameter("preference");
 
-        if (eventIdStr == null || userIdStr == null) {
+        if (eventIdStr == null || userIdStr == null || phone == null || ageStr == null || preference == null
+                || phone.trim().isEmpty() || ageStr.trim().isEmpty() || preference.trim().isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/Member-dashboard?error=missing");
             return;
         }
@@ -31,8 +35,9 @@ public class joinEventServlet extends HttpServlet {
         try {
             int eventId = Integer.parseInt(eventIdStr);
             int userId = Integer.parseInt(userIdStr);
+            int age = Integer.parseInt(ageStr);
 
-            boolean success = regDAO.joinEvent(userId, eventId);
+            boolean success = regDAO.joinEvent(userId, eventId, phone.trim(), age, preference.trim());
             if (success) {
                 response.sendRedirect(request.getContextPath() + "/Member-dashboard?success=1");
             } else {

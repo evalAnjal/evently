@@ -13,16 +13,19 @@ import java.sql.Connection;
 
 public class registrationDAO {
 
-    public boolean joinEvent(int userId, int eventID){
-        String sql = "INSERT INTO registrations(user_id, event_id) VALUES(?,?)";
+    public boolean joinEvent(int userId, int eventID, String phone, int age, String preference){
+        String sql = "INSERT INTO registrations(user_id, event_id, phone, age, preference) VALUES(?,?,?,?,?)";
 
-        try(Connection conn = DBconnection.getConnection();
-    PreparedStatement st = conn.prepareStatement(sql)){
-        st.setInt(1, userId);
-        st.setInt(2, eventID);
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, userId);
+            st.setInt(2, eventID);
+            st.setString(3, phone);
+            st.setInt(4, age);
+            st.setString(5, preference);
 
-        int rowsAffected = st.executeUpdate();
-        return rowsAffected > 0; // Return true if the registration was successful
+            int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0;
     } catch (SQLException e) {
         e.printStackTrace();
     }

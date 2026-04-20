@@ -37,6 +37,24 @@ public class AdminDashboardServlet extends HttpServlet {
         Map<Integer, Integer> registrationCounts = eventDAO.getRegistrationCountByEvent();
         Map<Integer, Integer> participantCounts = eventDAO.getParticipantCountByEvent();
 
+        String selectedEventIdStr = request.getParameter("eventId");
+        if (selectedEventIdStr != null && !selectedEventIdStr.isBlank()) {
+            try {
+                int selectedEventId = Integer.parseInt(selectedEventIdStr);
+                request.setAttribute("selectedEventId", selectedEventId);
+                request.setAttribute("selectedEventMembers", eventDAO.getJoinedMembersByEvent(selectedEventId));
+
+                for (Event event : events) {
+                    if (event.getId() == selectedEventId) {
+                        request.setAttribute("selectedEvent", event);
+                        break;
+                    }
+                }
+            } catch (NumberFormatException ignored) {
+                // Ignore invalid event id and render dashboard normally.
+            }
+        }
+
         request.setAttribute("events", events);
         request.setAttribute("totalEvents", totalEvents);
         request.setAttribute("approvedEvents", approvedEvents);

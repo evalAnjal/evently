@@ -139,6 +139,37 @@ public class EventDAO {
         return runFallbackGroupedCountQueries(fallbackQueries);
     }
 
+    public List<Map<String, Object>> getJoinedMembersByEvent(int eventId) {
+        List<Map<String, Object>> members = new ArrayList<>();
+        String sql = "SELECT u.id AS user_id, u.username, u.email, r.phone, r.age, r.preference "
+                + "FROM registrations r "
+                + "JOIN users u ON u.id = r.user_id "
+                + "WHERE r.event_id = ? "
+                + "ORDER BY u.username";
+
+        try (
+            Connection conn = DBconnection.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql)
+        ) {
+            st.setInt(1, eventId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> member = new HashMap<>();
+                member.put("userId", rs.getInt("user_id"));
+                member.put("username", rs.getString("username"));
+                member.put("email", rs.getString("email"));
+                member.put("phone", rs.getString("phone"));
+                member.put("age", rs.getObject("age"));
+                member.put("preference", rs.getString("preference"));
+                members.add(member);
+            }
+        } catch (SQLException e) {
+            return new ArrayList<>();
+        }
+
+        return members;
+    }
+
     private int getSingleCount(String sql) {
         try (
             Connection conn = DBconnection.getConnection();
