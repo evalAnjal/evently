@@ -6,6 +6,7 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private String district;
 
     public int getId() {
         return id;
@@ -44,5 +45,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 }

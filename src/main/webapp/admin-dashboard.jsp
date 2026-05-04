@@ -45,6 +45,16 @@
             Event could not be created. Please try again.
         </div>
     </c:if>
+    <c:if test="${param.error == 'not_verified'}">
+        <div class="mb-4 rounded-md border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm">
+            Your organiser account is not verified by SUPER_ADMIN yet.
+        </div>
+    </c:if>
+    <c:if test="${param.error == 'district_mismatch'}">
+        <div class="mb-4 rounded-md border border-red-200 bg-red-50 text-red-800 px-4 py-3 text-sm">
+            You can only create events in your organisation district.
+        </div>
+    </c:if>
 
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <article class="bg-white border border-blue-100 rounded-lg p-4 shadow-sm">
@@ -175,8 +185,9 @@
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium mb-1" for="location">Location</label>
-                            <input id="location" name="location" type="text" required class="w-full rounded-md border border-blue-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+                            <label class="block text-sm font-medium mb-1" for="location">Organisation District</label>
+                            <input id="location" name="location" type="text" readonly value="${organiserDistrict}" class="w-full rounded-md border border-blue-200 px-3 py-2 bg-blue-50 text-slate-700 focus:outline-none" />
+                            <p class="mt-1 text-xs text-slate-500">This is fixed to your organisation's district.</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1" for="eventDate">Date and Time</label>

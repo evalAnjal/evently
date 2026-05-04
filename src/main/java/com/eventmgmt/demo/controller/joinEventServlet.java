@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 @WebServlet("/joinEvent")
 public class joinEventServlet extends HttpServlet {
@@ -36,6 +37,19 @@ public class joinEventServlet extends HttpServlet {
             int eventId = Integer.parseInt(eventIdStr);
             int userId = Integer.parseInt(userIdStr);
             int age = Integer.parseInt(ageStr);
+
+            // Server-side validation: do not allow joining past events
+            EventDAO eDAO = new EventDAO();
+            Event event = eDAO.getEventById(eventId);
+            if (event == null) {
+                response.sendRedirect(request.getContextPath() + "/Member-dashboard?error=not_found");
+                return;
+            }
+            Timestamp eventTs = event.getEventDate();
+            if (eventTs != null && eventTs.getTime() < System.currentTimeMillis()) {
+                response.sendRedirect(request.getContextPath() + "/Member-dashboard?error=past_event");
+                return;
+            }
 
             boolean success = regDAO.joinEvent(userId, eventId, phone.trim(), age, preference.trim());
             if (success) {

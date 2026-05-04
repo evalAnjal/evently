@@ -31,8 +31,19 @@
 
     <form action="<%= request.getContextPath() %>/registerProcess" method="POST" class="space-y-6">
         <div>
+            <label class="block text-sm font-medium text-gray-700">Account Type</label>
+            <select id="accountType" name="accountType" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                <option value="MEMBER" selected>Member</option>
+                <option value="ORGANISER">Organisation / Event Organiser</option>
+            </select>
+        </div>
+        <div>
             <label class="block text-sm font-medium text-gray-700">Full Name</label>
             <input type="text" name="username" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">District</label>
+            <input type="text" name="district" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Email Address</label>
@@ -42,6 +53,22 @@
             <label class="block text-sm font-medium text-gray-700">Password</label>
             <input type="password" name="pass" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
         </div>
+
+        <div id="organiserSection" class="hidden rounded-lg border border-indigo-200 bg-indigo-50 p-4 space-y-3">
+            <p class="text-sm font-medium text-indigo-800">Organisation Details (requires SUPER_ADMIN approval)</p>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Organisation Name</label>
+                <input id="orgName" type="text" name="orgName" class="mt-1 block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Organisation Phone</label>
+                <input id="orgPhone" type="text" name="orgPhone" class="mt-1 block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Organisation Address</label>
+                <textarea id="orgAddress" name="orgAddress" rows="2" class="mt-1 block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"></textarea>
+            </div>
+        </div>
         <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition">
             Sign Up
         </button>
@@ -50,5 +77,21 @@
 
     </form>
 </div>
+<script>
+    const accountType = document.getElementById("accountType");
+    const organiserSection = document.getElementById("organiserSection");
+    const orgName = document.getElementById("orgName");
+    const orgAddress = document.getElementById("orgAddress");
+
+    function syncRegistrationMode() {
+        const isOrg = accountType.value === "ORGANISER";
+        organiserSection.classList.toggle("hidden", !isOrg);
+        orgName.required = isOrg;
+        orgAddress.required = isOrg;
+    }
+
+    accountType.addEventListener("change", syncRegistrationMode);
+    syncRegistrationMode();
+</script>
 </body>
 </html>

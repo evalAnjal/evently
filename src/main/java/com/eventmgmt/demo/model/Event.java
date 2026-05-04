@@ -8,6 +8,9 @@ public class Event {
     private String location;
     private Timestamp eventDate;
     private String status;
+    private Integer organiserId;
+    private String district;
+    private String createdByEmail;
 
     public int getId() {
         return id;
@@ -55,5 +58,29 @@ public class Event {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getOrganiserId() {
+        return organiserId;
+    }
+
+    public void setOrganiserId(Integer organiserId) {
+        this.organiserId = organiserId;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getCreatedByEmail() {
+        return createdByEmail;
+    }
+
+    public void setCreatedByEmail(String createdByEmail) {
+        this.createdByEmail = createdByEmail;
     }
 }

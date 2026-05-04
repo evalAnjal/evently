@@ -26,12 +26,41 @@ public class EventServelet extends HttpServlet{
             return;
         }
 
-        List<Event> eventList = eventDAO.getAllApprovedEvents();
+        String view = request.getParameter("view"); // if view=past show past joined events
         List<Integer> joinedIds = regDAO.getJoinedEventIds(user.getId());
 
-        request.setAttribute("events", eventList);
-        request.setAttribute("joinedIds", joinedIds);
+        if ("past".equals(view)) {
+            // show only events that the user joined and are in the past
+            List<Event> pastJoined = new java.util.ArrayList<>();
+            long now = System.currentTimeMillis();
+            for (Integer id : joinedIds) {
+                Event e = eventDAO.getEventById(id);
+                if (e != null && e.getEventDate() != null && e.getEventDate().getTime() < now) {
+                    pastJoined.add(e);
+                }
+            }
+            request.setAttribute("events", pastJoined);
+            request.setAttribute("showPast", true);
+        } else {
+            // default - show upcoming/ongoing approved events only
+            List<Event> all;
+            if (user.getDistrict() != null && !user.getDistrict().isBlank()) {
+                all = eventDAO.getAllApprovedEventsByDistrict(user.getDistrict());
+            } else {
+                all = eventDAO.getAllApprovedEvents();
+            }
+            long now = System.currentTimeMillis();
+            List<Event> upcoming = new java.util.ArrayList<>();
+            for (Event e : all) {
+                if (e.getEventDate() == null || e.getEventDate().getTime() >= now) {
+                    upcoming.add(e);
+                }
+            }
+            request.setAttribute("events", upcoming);
+            request.setAttribute("showPast", false);
+        }
 
+        request.setAttribute("joinedIds", joinedIds);
         request.getRequestDispatcher("/member-dashboard.jsp").forward(request, response);
     }
 }

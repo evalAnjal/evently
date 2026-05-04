@@ -2,7 +2,9 @@
     com.eventmgmt.demo.model.User loggedInUser =
             (com.eventmgmt.demo.model.User) session.getAttribute("user");
     if (loggedInUser != null) {
-        if ("ADMIN".equals(loggedInUser.getRole())) {
+        if ("SUPER_ADMIN".equals(loggedInUser.getRole())) {
+            response.sendRedirect(request.getContextPath() + "/super-admin/organisers");
+        } else if ("ADMIN".equals(loggedInUser.getRole())) {
             response.sendRedirect(request.getContextPath() + "/admin-dashboard");
         } else {
             response.sendRedirect(request.getContextPath() + "/Member-dashboard");

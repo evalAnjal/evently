@@ -40,32 +40,52 @@ public class EventDAO {
             ResultSet rs = st.executeQuery();
 
             while(rs.next()){
-                Event e = new Event();
-                e.setId(rs.getInt("id"));
-                e.setTitle(rs.getString("title"));
-                e.setDescription(rs.getString("description"));
-                e.setLocation(rs.getString("location"));
-                e.setEventDate(rs.getTimestamp("event_date"));
-                e.setStatus(rs.getString("status"));
-
-                events.add(e);
+                events.add(mapEvent(rs));
 
             }
         }
         catch(SQLException e){
-            throw new Error("EventDAO ERROR");
+            e.printStackTrace();
+        }
+        return events;
+    }
+
+    public List<Event> getAllApprovedEventsByDistrict(String district) {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT * FROM events WHERE status = 'APPROVED' AND district = ?";
+
+        try(
+            Connection conn = DBconnection.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+        ){
+            st.setString(1, district);
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()){
+                events.add(mapEvent(rs));
+            }
+        }
+        catch(SQLException e){
+            // 42703: undefined_column. Fallback for DBs not yet migrated with district column.
+            if ("42703".equals(e.getSQLState())) {
+                return getAllApprovedEvents();
+            }
+            e.printStackTrace();
         }
         return events;
     }
 
     public boolean createEvent(Event event) {
-        String sql = "INSERT INTO events (title, description, location, event_date, status) VALUES (?, ?, ?, ?, 'APPROVED')";
+        String sql = "INSERT INTO events (title, description, location, event_date, status, organiser_id, district, created_by_email) VALUES (?, ?, ?, ?, 'APPROVED', ?, ?, ?)";
         try (Connection conn = DBconnection.getConnection();
              PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, event.getTitle());
             st.setString(2, event.getDescription());
             st.setString(3, event.getLocation());
             st.setTimestamp(4, event.getEventDate());
+            st.setObject(5, event.getOrganiserId(), Types.INTEGER);
+            st.setString(6, event.getDistrict());
+            st.setString(7, event.getCreatedByEmail());
 
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0; // Return true if the event was created successfully
@@ -85,17 +105,33 @@ public class EventDAO {
             ResultSet rs = st.executeQuery()
         ) {
             while (rs.next()) {
-                Event e = new Event();
-                e.setId(rs.getInt("id"));
-                e.setTitle(rs.getString("title"));
-                e.setDescription(rs.getString("description"));
-                e.setLocation(rs.getString("location"));
-                e.setEventDate(rs.getTimestamp("event_date"));
-                e.setStatus(rs.getString("status"));
-                events.add(e);
+                events.add(mapEvent(rs));
             }
         } catch (SQLException e) {
-            throw new Error("EventDAO ERROR while loading all events");
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+
+    public List<Event> getAllEventsByCreatorEmail(String creatorEmail) {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT e.* FROM events e WHERE e.created_by_email = ? "
+                + "OR e.organiser_id IN (SELECT o.id FROM organisers o WHERE o.email = ?) "
+                + "ORDER BY e.event_date DESC";
+
+        try (
+            Connection conn = DBconnection.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql)
+        ) {
+            st.setString(1, creatorEmail);
+            st.setString(2, creatorEmail);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                events.add(mapEvent(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return events;
@@ -105,8 +141,20 @@ public class EventDAO {
         return getSingleCount("SELECT COUNT(*) FROM events");
     }
 
+    public int getTotalEventsCountByCreatorEmail(String creatorEmail) {
+        return getSingleCountByCreator(
+                "SELECT COUNT(*) FROM events e WHERE e.created_by_email = ? OR e.organiser_id IN (SELECT o.id FROM organisers o WHERE o.email = ?)",
+                creatorEmail);
+    }
+
     public int getTotalApprovedEventsCount() {
         return getSingleCount("SELECT COUNT(*) FROM events WHERE status = 'APPROVED'");
+    }
+
+    public int getTotalApprovedEventsCountByCreatorEmail(String creatorEmail) {
+        return getSingleCountByCreator(
+                "SELECT COUNT(*) FROM events e WHERE e.status = 'APPROVED' AND (e.created_by_email = ? OR e.organiser_id IN (SELECT o.id FROM organisers o WHERE o.email = ?))",
+                creatorEmail);
     }
 
     public int getTotalMembersCount() {
@@ -121,12 +169,24 @@ public class EventDAO {
         return runFallbackCountQueries(fallbackQueries);
     }
 
+    public int getTotalRegistrationsCountByCreatorEmail(String creatorEmail) {
+        String sql = "SELECT COUNT(*) FROM registrations r JOIN events e ON e.id = r.event_id "
+                + "WHERE e.created_by_email = ? OR e.organiser_id IN (SELECT o.id FROM organisers o WHERE o.email = ? )";
+        return getSingleCountByCreator(sql, creatorEmail);
+    }
+
     public Map<Integer, Integer> getRegistrationCountByEvent() {
         String[] fallbackQueries = new String[] {
             "SELECT event_id, COUNT(*) FROM event_registrations GROUP BY event_id",
             "SELECT event_id, COUNT(*) FROM registrations GROUP BY event_id"
         };
         return runFallbackGroupedCountQueries(fallbackQueries);
+    }
+
+    public Map<Integer, Integer> getRegistrationCountByEventByCreatorEmail(String creatorEmail) {
+        String sql = "SELECT e.id, COUNT(*) FROM registrations r JOIN events e ON e.id = r.event_id "
+                + "WHERE e.created_by_email = ? OR e.organiser_id IN (SELECT o.id FROM organisers o WHERE o.email = ?) GROUP BY e.id";
+        return executeGroupedCountQueryByCreator(sql, creatorEmail);
     }
 
     public Map<Integer, Integer> getParticipantCountByEvent() {
@@ -137,6 +197,12 @@ public class EventDAO {
             "SELECT event_id, COUNT(*) FROM registrations GROUP BY event_id"
         };
         return runFallbackGroupedCountQueries(fallbackQueries);
+    }
+
+    public Map<Integer, Integer> getParticipantCountByEventByCreatorEmail(String creatorEmail) {
+        String sql = "SELECT e.id, COUNT(DISTINCT r.user_id) FROM registrations r JOIN events e ON e.id = r.event_id "
+                + "WHERE e.created_by_email = ? OR e.organiser_id IN (SELECT o.id FROM organisers o WHERE o.email = ?) GROUP BY e.id";
+        return executeGroupedCountQueryByCreator(sql, creatorEmail);
     }
 
     public List<Map<String, Object>> getJoinedMembersByEvent(int eventId) {
@@ -185,6 +251,23 @@ public class EventDAO {
         return 0;
     }
 
+    private int getSingleCountByCreator(String sql, String creatorEmail) {
+        try (
+            Connection conn = DBconnection.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+        ) {
+            st.setString(1, creatorEmail);
+            st.setString(2, creatorEmail);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            return 0;
+        }
+        return 0;
+    }
+
     private int runFallbackCountQueries(String[] queries) {
         for (String query : queries) {
             int count = getSingleCount(query);
@@ -221,5 +304,76 @@ public class EventDAO {
         }
 
         return counts;
+    }
+
+    private Map<Integer, Integer> executeGroupedCountQueryByCreator(String sql, String creatorEmail) {
+        Map<Integer, Integer> counts = new HashMap<>();
+        try (
+            Connection conn = DBconnection.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+        ) {
+            st.setString(1, creatorEmail);
+            st.setString(2, creatorEmail);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                counts.put(rs.getInt(1), rs.getInt(2));
+            }
+        } catch (SQLException e) {
+            return new HashMap<>();
+        }
+        return counts;
+    }
+
+    /**
+     * Retrieve a single Event by id.
+     * Returns null if not found or on error.
+     */
+    public Event getEventById(int id) {
+        String sql = "SELECT * FROM events WHERE id = ?";
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return mapEvent(rs);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    private Event mapEvent(ResultSet rs) throws SQLException {
+        Event e = new Event();
+        e.setId(rs.getInt("id"));
+        e.setTitle(rs.getString("title"));
+        e.setDescription(rs.getString("description"));
+        e.setLocation(rs.getString("location"));
+        e.setEventDate(rs.getTimestamp("event_date"));
+        e.setStatus(rs.getString("status"));
+        if (hasColumn(rs, "created_by_email")) {
+            e.setCreatedByEmail(rs.getString("created_by_email"));
+        }
+        if (hasColumn(rs, "organiser_id")) {
+            e.setOrganiserId((Integer) rs.getObject("organiser_id"));
+        }
+        if (hasColumn(rs, "district")) {
+            e.setDistrict(rs.getString("district"));
+        }
+        return e;
+    }
+
+    private boolean hasColumn(ResultSet rs, String columnName) {
+        try {
+            ResultSetMetaData meta = rs.getMetaData();
+            int cols = meta.getColumnCount();
+            for (int i = 1; i <= cols; i++) {
+                if (columnName.equalsIgnoreCase(meta.getColumnLabel(i))) {
+                    return true;
+                }
+            }
+        } catch (SQLException ignored) {
+        }
+        return false;
     }
 }
