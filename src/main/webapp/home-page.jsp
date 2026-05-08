@@ -269,6 +269,21 @@
               Evently helps organizers publish event details, sell tickets, and
               keep every attendee connected.
             </p>
+            <button
+              style="
+                /* background-color: rgb(2, 55, 147); */
+                padding: 10px;
+                display: flex;
+                width: 120px;
+                border: 2px solid rgb(2, 55, 147);
+                justify-content: center;
+                border-radius: 20px;
+                color: rgb(2, 55, 147);
+              "
+            >
+              <a href="">Join Now</a>
+            </button>
+
             <div class="hero-meta">
               <div class="meta-card">
                 <h3>Designed for campuses</h3>
@@ -329,10 +344,6 @@
             </p>
           </div>
         </div>
-      </div>
-
-      <div class="bottom-cta">
-        <button class="join-btn" type="button">Join Evently</button>
       </div>
     </div>
   </body>
