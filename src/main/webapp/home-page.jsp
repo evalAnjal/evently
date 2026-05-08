@@ -247,6 +247,7 @@
                 <li><a href="#" class="">Home</a></li>
                 <li><a href="#">About US</a></li>
                 <li><a href="#">Events</a></li>
+                <li><a href="#">Contact</a></li>
               </ul>
             </div>
             <div class="login">
@@ -345,6 +346,13 @@
           </div>
         </div>
       </div>
+      <footer class="w-500 bg-blue-900 p-6 mt-10 h-80 rounded-3xl">
+        <div class="footer-content">
+          <div>
+            <img class="h-40" src="../../../logoBlue.png" alt="" />
+          </div>
+        </div>
+      </footer>
     </div>
   </body>
 </html>
