@@ -89,7 +89,7 @@
       }
 
       .logo img {
-        height: 90px;
+        height: 140px;
         width: auto;
         display: block;
       }
@@ -348,8 +348,83 @@
       </div>
       <footer class="w-500 bg-blue-900 p-6 mt-10 h-80 rounded-3xl">
         <div class="footer-content">
-          <div>
-            <img class="h-40" src="../../../logoBlue.png" alt="" />
+          <div class="flex justify-around">
+            <div>
+              <ul class="flex gap-2 font-mono flex-col mt-6">
+                <li class="text-white hover:text-blue-300">
+                  <a href="#" class="inline-flex gap-2">
+                    <img src="./facebook.png" class="h-6" alt="" /><span
+                      >Facebook</span
+                    ></a
+                  >
+                </li>
+                <li class="text-white hover:text-blue-300">
+                   <a href="#" class="inline-flex gap-2">
+                    <img src="./instagram.png" class="h-6" alt="" /><span
+                      >Instagram</span
+                    ></a
+                </li>
+                <li class="text-white hover:text-blue-300">
+                   <a href="#" class="inline-flex gap-2">
+                    <img src="./linkdin.png" class="h-6" alt="" /><span
+                      >Linkdin</span
+                    ></a
+                </li>
+                <li class="text-white hover:text-blue-300">
+                  <a href="#" class="inline-flex gap-2">
+                    <img src="./x.png" class="h-6" alt="" /><span
+                      >X</span
+                    ></a
+                </li>
+              </ul>
+            </div>
+
+            <div class="flex flex-col gap-3 w-[280px]">
+              <h3 class="text-white font-bold text-sm font-mono">Contact Us</h3>
+
+              <input
+                type="email"
+                placeholder="Your Email"
+                class="p-3 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400"
+              />
+              <textarea
+                placeholder="Your Message"
+                rows="2"
+                class="p-4 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400 resize-none"
+              ></textarea>
+              <button
+                type="button"
+                class="px-4 py-1.5 text-sm bg-white text-blue-900 font-bold rounded-lg hover:bg-blue-100 transition"
+              >
+                Send
+              </button>
+            </div>
+            <div class="mt-6">
+              <ul class="flex gap-2 flex-col">
+                <li class="text-white font-mono hover:text-blue-300">
+                  <a href="#" class="">Home</a>
+                </li>
+                <li class="text-white font-mono hover:text-blue-300">
+                  <a href="#">About US</a>
+                </li>
+                <li class="text-white font-mono hover:text-blue-300">
+                  <a href="#">Events</a>
+                </li>
+                <li class="text-white font-mono hover:text-blue-300">
+                  <a href="#">Contact</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <hr class="mt-4"/>
+          <div class="flex justify-between mt-9 text-white">
+            <div>
+              <p>Since 2025</p>
+            </div>
+            <div>
+              <p>&copy;2026 Evently. All rights reserved.</p>
+            </div>
           </div>
         </div>
       </footer>
