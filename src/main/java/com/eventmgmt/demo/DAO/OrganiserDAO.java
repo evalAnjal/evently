@@ -2,6 +2,7 @@ package com.eventmgmt.demo.DAO;
 
 import com.eventmgmt.demo.model.Organiser;
 import com.eventmgmt.demo.util.DBconnection;
+import com.eventmgmt.demo.util.PasswordUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,21 +34,23 @@ public class OrganiserDAO {
      */
     public Organiser validateOrganiser(String email, String password) {
         Organiser org = null;
-        String sql = "SELECT * FROM organisers WHERE email = ? AND password = ?";
-        
+        String sql = "SELECT * FROM organisers WHERE email = ?";
+
         try (Connection conn = DBconnection.getConnection();
              PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, email);
-            st.setString(2, password);
-            
+
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                org = mapResultSetToOrganiser(rs);
+                String hashedPassword = rs.getString("password");
+                if (PasswordUtils.verifyPassword(password, hashedPassword)) {
+                    org = mapResultSetToOrganiser(rs);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return org;
     }
 
