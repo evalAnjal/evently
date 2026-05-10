@@ -2,40 +2,36 @@ package com.eventmgmt.demo.DAO;
 
 import com.eventmgmt.demo.model.User;
 import com.eventmgmt.demo.util.DBconnection;
+import com.eventmgmt.demo.util.PasswordUtils;
 import java.sql.*;
 
 public class UserDAO {
-    public User validateUser (String email, String password){
+    public User validateUser(String email, String password) {
         User user = null;
-        String sql = "select * from users where email =? and password = ?";
+        String sql = "select * from users where email = ?";
 
-        try(Connection conn = DBconnection.getConnection();
-            PreparedStatement st = conn.prepareStatement(sql)        
-    ){
-        st.setString(1,email);
-        st.setString(2,password);
-        
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, email);
 
-        ResultSet rs = st.executeQuery();
-
-        if(rs.next()){
-            user = new User();
-            user.setId(rs.getInt("id"));
-            user.setEmail(rs.getString("email"));
-            user.setRole(rs.getString(("role")));
-            user.setUsername(rs.getString(("username")));
-            if (hasColumn(rs, "district")) {
-                user.setDistrict(rs.getString("district"));
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                String hashedPassword = rs.getString("password");
+                if (PasswordUtils.verifyPassword(password, hashedPassword)) {
+                    user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setEmail(rs.getString("email"));
+                    user.setRole(rs.getString("role"));
+                    user.setUsername(rs.getString("username"));
+                    if (hasColumn(rs, "district")) {
+                        user.setDistrict(rs.getString("district"));
+                    }
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-
-        
-    }
-    catch(SQLException e){
-        e.printStackTrace();
-    }
-    return user;
+        return user;
     }
 
     public int registerUserAndGetId(User user) throws SQLException {

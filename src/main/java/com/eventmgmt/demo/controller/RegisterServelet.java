@@ -13,6 +13,7 @@ import com.eventmgmt.demo.DAO.OrganiserDAO;
 import com.eventmgmt.demo.DAO.UserDAO;
 import com.eventmgmt.demo.model.Organiser;
 import com.eventmgmt.demo.model.User;
+import com.eventmgmt.demo.util.PasswordUtils;
 
 @WebServlet("/registerProcess")
 public class RegisterServelet extends HttpServlet {
@@ -38,10 +39,12 @@ public class RegisterServelet extends HttpServlet {
         String district = request.getParameter("district");
         String accountType = request.getParameter("accountType");
 
+        String hashedPassword = PasswordUtils.hashPassword(pass);
+
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setEmail(email);
-        newUser.setPassword(pass);
+        newUser.setPassword(hashedPassword);
         newUser.setDistrict(district);
 
         boolean isOrganiser = "ORGANISER".equalsIgnoreCase(accountType);
@@ -59,7 +62,7 @@ public class RegisterServelet extends HttpServlet {
                 organiser.setUserId(userId);
                 organiser.setName(orgName == null || orgName.isBlank() ? username : orgName);
                 organiser.setEmail(email);
-                organiser.setPassword(pass);
+                organiser.setPassword(hashedPassword);
                 organiser.setPhone(orgPhone);
                 organiser.setDistrict(district);
                 organiser.setAddress(orgAddress);
