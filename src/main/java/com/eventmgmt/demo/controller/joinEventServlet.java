@@ -26,8 +26,8 @@ public class joinEventServlet extends HttpServlet {
         String ageStr = request.getParameter("age");
         String preference = request.getParameter("preference");
 
-        if (eventIdStr == null || userIdStr == null || phone == null || ageStr == null || preference == null
-                || phone.trim().isEmpty() || ageStr.trim().isEmpty() || preference.trim().isEmpty()) {
+        if (eventIdStr == null || phone == null || ageStr == null || preference == null
+            || phone.trim().isEmpty() || ageStr.trim().isEmpty() || preference.trim().isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/Member-dashboard?error=missing");
             return;
         }
