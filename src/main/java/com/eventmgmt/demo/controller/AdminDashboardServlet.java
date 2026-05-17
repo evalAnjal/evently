@@ -33,9 +33,18 @@ public class AdminDashboardServlet extends HttpServlet {
         }
 
         Organiser organiser = organiserDAO.getOrganiserByUserId(user.getId());
-        if (organiser != null) {
-            request.setAttribute("organiserDistrict", organiser.getDistrict());
+        if (organiser == null) {
+            organiser = organiserDAO.getOrganiserByEmail(user.getEmail());
         }
+
+        String organiserDistrict = null;
+        if (organiser != null) {
+            organiserDistrict = organiser.getDistrict();
+        }
+        if ((organiserDistrict == null || organiserDistrict.isBlank()) && user.getDistrict() != null) {
+            organiserDistrict = user.getDistrict();
+        }
+        request.setAttribute("organiserDistrict", organiserDistrict == null ? "" : organiserDistrict.trim());
 
         List<Event> events = eventDAO.getAllEventsByCreatorEmail(user.getEmail());
         int totalEvents = eventDAO.getTotalEventsCountByCreatorEmail(user.getEmail());

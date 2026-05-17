@@ -15,7 +15,10 @@
             <h1 class="text-2xl font-bold text-slate-900">Organiser Approval Queue</h1>
             <p class="text-sm text-slate-600">Approve organisation registrations to grant ADMIN access.</p>
         </div>
-        <a href="${pageContext.request.contextPath}/logout" class="text-indigo-600 text-sm">Logout</a>
+        <div class="flex items-center gap-4">
+            <a href="${pageContext.request.contextPath}/super-admin/dashboard" class="text-slate-700 text-sm">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/logout" class="text-indigo-600 text-sm">Logout</a>
+        </div>
     </header>
 
     <c:if test="${param.success == 'approved'}">
@@ -23,6 +26,9 @@
     </c:if>
     <c:if test="${param.success == 'rejected'}">
         <div class="mb-4 rounded-md border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm">Organiser application rejected.</div>
+    </c:if>
+    <c:if test="${param.success == 'deactivated'}">
+        <div class="mb-4 rounded-md border border-slate-200 bg-slate-50 text-slate-800 px-4 py-3 text-sm">Organiser deactivated.</div>
     </c:if>
     <c:if test="${not empty param.error}">
         <div class="mb-4 rounded-md border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm">Action failed. Please retry.</div>
@@ -68,6 +74,49 @@
             <c:if test="${empty pendingOrganisers}">
                 <tr>
                     <td colspan="5" class="px-4 py-8 text-center text-slate-500">No pending organiser applications.</td>
+                </tr>
+            </c:if>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="mt-6 bg-white rounded-lg border border-slate-200 overflow-hidden">
+        <div class="px-4 py-4 border-b border-slate-100">
+            <h2 class="text-lg font-semibold text-slate-900">Verified Organisations</h2>
+            <p class="text-sm text-slate-600">Active organisers currently verified on the platform.</p>
+        </div>
+        <table class="w-full text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+                <th class="text-left px-4 py-3">Organisation</th>
+                <th class="text-left px-4 py-3">Email</th>
+                <th class="text-left px-4 py-3">District</th>
+                <th class="text-left px-4 py-3">Phone</th>
+                <th class="text-left px-4 py-3">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="org" items="${verifiedOrganisers}">
+                <tr class="border-b border-slate-100">
+                    <td class="px-4 py-3">
+                        <div class="font-medium text-slate-900">${org.name}</div>
+                        <div class="text-xs text-slate-500">${org.address}</div>
+                    </td>
+                    <td class="px-4 py-3">${org.email}</td>
+                    <td class="px-4 py-3">${org.district}</td>
+                    <td class="px-4 py-3">${org.phone}</td>
+                    <td class="px-4 py-3">
+                        <form method="post" action="${pageContext.request.contextPath}/super-admin/organisers">
+                            <input type="hidden" name="organiserId" value="${org.id}">
+                            <input type="hidden" name="action" value="deactivate">
+                            <button class="px-3 py-1.5 rounded bg-red-600 text-white text-xs">Deactivate</button>
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
+            <c:if test="${empty verifiedOrganisers}">
+                <tr>
+                    <td colspan="5" class="px-4 py-8 text-center text-slate-500">No verified organisers.</td>
                 </tr>
             </c:if>
             </tbody>

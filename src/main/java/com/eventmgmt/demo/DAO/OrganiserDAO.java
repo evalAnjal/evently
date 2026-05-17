@@ -42,9 +42,20 @@ public class OrganiserDAO {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                String hashedPassword = rs.getString("password");
-                if (PasswordUtils.verifyPassword(password, hashedPassword)) {
+                String stored = rs.getString("password");
+                if (PasswordUtils.verifyPassword(password, stored)) {
                     org = mapResultSetToOrganiser(rs);
+
+                    // Upgrade legacy plaintext organiser passwords to bcrypt
+                    if (stored != null && !stored.startsWith("$2")) {
+                        String newHash = PasswordUtils.hashPassword(password);
+                        try (PreparedStatement up = conn.prepareStatement("UPDATE organisers SET password = ? WHERE id = ?")) {
+                            up.setString(1, newHash);
+                            up.setInt(2, rs.getInt("id"));
+                            up.executeUpdate();
+                        } catch (SQLException ignored) {
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -80,6 +91,24 @@ public class OrganiserDAO {
         try (Connection conn = DBconnection.getConnection();
              PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, userId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToOrganiser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Get organiser by email address
+     */
+    public Organiser getOrganiserByEmail(String email) {
+        String sql = "SELECT * FROM organisers WHERE email = ?";
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, email);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return mapResultSetToOrganiser(rs);
@@ -142,6 +171,21 @@ public class OrganiserDAO {
              PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, organiserId);
             
+            int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+
+    /**
+     * Deactivate a verified organiser (set verified = FALSE)
+     */
+    public boolean deactivateOrganiser(int organiserId) throws SQLException {
+        String sql = "UPDATE organisers SET verified = FALSE, updated_at = now() WHERE id = ?";
+
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, organiserId);
+
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
         }

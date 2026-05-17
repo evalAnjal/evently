@@ -43,7 +43,11 @@
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">District</label>
-            <input type="text" name="district" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+            <select name="district" required class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                <option value="" disabled selected>Select district</option>
+                <option value="morang">Morang</option>
+                <option value="sunsari">Sunsari</option>
+            </select>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Email Address</label>
