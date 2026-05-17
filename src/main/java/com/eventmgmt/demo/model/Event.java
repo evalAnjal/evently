@@ -10,6 +10,7 @@ public class Event {
     private String status;
     private Integer organiserId;
     private String district;
+    private Integer capacity;
     private String createdByEmail;
 
     public int getId() {
@@ -74,6 +75,14 @@ public class Event {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     public String getCreatedByEmail() {

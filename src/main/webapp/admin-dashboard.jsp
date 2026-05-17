@@ -40,6 +40,11 @@
             Invalid date format.
         </div>
     </c:if>
+    <c:if test="${param.error == 'capacity'}">
+        <div class="mb-4 rounded-md border border-red-200 bg-red-50 text-red-800 px-4 py-3 text-sm">
+            Capacity must be a positive whole number.
+        </div>
+    </c:if>
     <c:if test="${param.error == 'failed'}">
         <div class="mb-4 rounded-md border border-red-200 bg-red-50 text-red-800 px-4 py-3 text-sm">
             Event could not be created. Please try again.
@@ -192,6 +197,11 @@
                         <div>
                             <label class="block text-sm font-medium mb-1" for="eventDate">Date and Time</label>
                             <input id="eventDate" name="eventDate" type="datetime-local" required class="w-full rounded-md border border-blue-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1" for="capacity">Capacity</label>
+                            <input id="capacity" name="capacity" type="number" min="1" required class="w-full rounded-md border border-blue-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+                            <p class="mt-1 text-xs text-slate-500">Maximum number of registrations allowed for this event.</p>
                         </div>
                     </div>
                     <div class="flex justify-end gap-2">
