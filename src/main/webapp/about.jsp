@@ -150,6 +150,38 @@
         </div> -->
       </section>
 
+      <!-- MISSION & VISION -->
+<section class="mt-12 grid md:grid-cols-2 gap-8">
+
+  <!-- MISSION -->
+  <div class="bg-white p-10 rounded-[36px] shadow-xl">
+    <h2 class="text-3xl font-bold text-blue-900 mb-4"
+        style="font-family:'Caprasimo', cursive;">
+      Our Mission
+    </h2>
+
+    <p class="text-slate-600 leading-8">
+      To simplify campus event management by providing an easy, fast,
+      and digital platform for students and organizers to create,
+      manage, and participate in events.
+    </p>
+  </div>
+
+  <!-- VISION -->
+  <div class="bg-white p-10 rounded-[36px] shadow-xl">
+    <h2 class="text-3xl font-bold text-blue-900 mb-4"
+        style="font-family:'Caprasimo', cursive;">
+      Our Vision
+    </h2>
+
+    <p class="text-slate-600 leading-8">
+      To become the most trusted and widely used campus event platform
+      that connects students, clubs, and institutions in one digital ecosystem.
+    </p>
+  </div>
+
+</section>
+
       <!-- STATS (FIXED - NO FLOATING) -->
       <section class="mt-12 bg-white rounded-[36px] p-10 card">
         <h2
@@ -189,6 +221,100 @@
           </div>
         </div>
       </section>
+      <!-- TESTIMONIALS -->
+<section class="mt-14 bg-white rounded-[36px] p-10 shadow-xl">
+
+  <!-- TITLE -->
+  <div class="text-center mb-10">
+
+    <h2
+      class="text-4xl font-bold text-blue-900"
+      style="font-family: 'Caprasimo', cursive;"
+    >
+      What Students Say
+    </h2>
+
+    <p class="text-slate-500 mt-3">
+      Real feedback from campus users using Evently
+    </p>
+
+  </div>
+
+  <!-- TESTIMONIAL GRID -->
+  <div class="grid md:grid-cols-3 gap-8">
+
+    <!-- CARD 1 -->
+    <div class="p-6 rounded-3xl bg-blue-50 border border-blue-100 shadow">
+
+      <p class="text-slate-600 leading-7 mb-5">
+        “Evently made it so easy to register for college events.
+        Everything is smooth and well organized.”
+      </p>
+
+      <div class="flex items-center gap-3">
+
+        <div class="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold">
+          S
+        </div>
+
+        <div>
+          <h4 class="font-bold text-blue-900">Sujan KC</h4>
+          <p class="text-sm text-slate-500">Student</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="p-6 rounded-3xl bg-blue-50 border border-blue-100 shadow">
+
+      <p class="text-slate-600 leading-7 mb-5">
+        “As a club organizer, managing registrations and tickets
+        became extremely simple with Evently.”
+      </p>
+
+      <div class="flex items-center gap-3">
+
+        <div class="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold">
+          A
+        </div>
+
+        <div>
+          <h4 class="font-bold text-blue-900">Aarav Sharma</h4>
+          <p class="text-sm text-slate-500">Club Coordinator</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="p-6 rounded-3xl bg-blue-50 border border-blue-100 shadow">
+
+      <p class="text-slate-600 leading-7 mb-5">
+        “The interface is clean and fast. Event updates and check-ins
+        are now effortless.”
+      </p>
+
+      <div class="flex items-center gap-3">
+
+        <div class="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold">
+          P
+        </div>
+
+        <div>
+          <h4 class="font-bold text-blue-900">Priya Shrestha</h4>
+          <p class="text-sm text-slate-500">Event Organizer</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
        <footer class="w-500 bg-blue-900 p-6 mt-10 h-80 rounded-3xl">
         <div class="footer-content">
           <div class="flex justify-around">
