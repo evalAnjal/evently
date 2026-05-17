@@ -350,7 +350,7 @@
 
             <div class="flex flex-col gap-3 w-[280px]">
               <h3 class="text-white font-bold text-sm font-mono">Contact Us</h3>
-
+<!-- 
               <input
                 type="email"
                 placeholder="Your Email"
@@ -366,7 +366,34 @@
                 class="px-4 py-1.5 text-sm bg-white text-blue-900 font-bold rounded-lg hover:bg-blue-100 transition"
               >
                 Send
-              </button>
+              </button> -->
+            <form action="/ContactServlet" method="post" class="flex flex-col gap-3">
+
+
+  <input
+    type="email"
+    name="email"
+    placeholder="Your Email"
+    class="p-3 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400"
+    required
+  />
+
+  <textarea
+    name="message"
+    placeholder="Your Message"
+    rows="2"
+    class="p-4 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400 resize-none"
+    required
+  ></textarea>
+
+  <button
+    type="submit"
+    class="px-4 py-1.5 text-sm bg-white text-blue-900 font-bold rounded-lg hover:bg-blue-100 transition"
+  >
+    Send
+  </button>
+
+</form>
             </div>
             <div class="mt-6">
               <ul class="flex gap-2 flex-col">
