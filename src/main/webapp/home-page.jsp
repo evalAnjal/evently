@@ -263,7 +263,7 @@
         <main class="hero-row">
           <div class="hero">
             <h1 class="caprasimo-regulars" style="color: rgb(2, 55, 147)">
-              Evently,
+              Evently
             </h1>
             <p class="hero-copy">
               Discover and manage events with a clean campus-first interface.
@@ -272,7 +272,6 @@
             </p>
             <button
               style="
-                /* background-color: rgb(2, 55, 147); */
                 padding: 10px;
                 display: flex;
                 width: 120px;
@@ -317,9 +316,9 @@
         <div class="feature-card">
           <img src="./tickets.png" alt="Ticketing icon" />
           <div>
-            <h3 class="font-bold">Ticketing + payments</h3>
+            <h3 class="font-bold">Ticketing</h3>
             <p>
-              Sell tickets, manage payments, and track registrations from one
+              Sell tickets and track registrations from one
               place.
             </p>
           </div>
