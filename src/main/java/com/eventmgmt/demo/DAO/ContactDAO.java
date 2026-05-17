@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 
 public class ContactDAO {
 
-    // SAVE MESSAGE INTO DATABASE
     public boolean saveMessage(Contact msg) {
 
         boolean result = false;

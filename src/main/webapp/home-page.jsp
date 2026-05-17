@@ -245,9 +245,10 @@
             <div class="menu font-mono">
               <ul>
                 <li><a href="#" class="">Home</a></li>
-                <li><a href="#">About US</a></li>
-                <li><a href="#">Events</a></li>
+                <li><a href="about.jsp">About US</a></li>
+                <li><a href="member-dashboard.jsp">Events</a></li>
                 <li><a href="#">Contact</a></li>
+
               </ul>
             </div>
             <div class="login">
@@ -255,7 +256,7 @@
                 class="bg-indigo-700 text-slate-100 flex align-center justify-center border-none"
                 type="button"
               >
-                Log in
+               <a href="./index.jsp"> Log in</a>
               </button>
             </div>
           </nav>
@@ -380,23 +381,32 @@
 
             <div class="flex flex-col gap-3 w-[280px]">
               <h3 class="text-white font-bold text-sm font-mono">Contact Us</h3>
+<form action="${pageContext.request.contextPath}/ContactServlet" method="post" class="flex flex-col gap-3">
 
-              <input
-                type="email"
-                placeholder="Your Email"
-                class="p-3 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400"
-              />
-              <textarea
-                placeholder="Your Message"
-                rows="2"
-                class="p-4 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400 resize-none"
-              ></textarea>
-              <button
-                type="button"
-                class="px-4 py-1.5 text-sm bg-white text-blue-900 font-bold rounded-lg hover:bg-blue-100 transition"
-              >
-                Send
-              </button>
+  <input
+    type="email"
+    name="email"
+    placeholder="Your Email"
+    class="p-3 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400"
+    required
+  />
+
+  <textarea
+    name="message"
+    placeholder="Your Message"
+    rows="2"
+    class="p-4 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400 resize-none"
+    required
+  ></textarea>
+
+  <button
+    type="submit"
+    class="px-4 py-1.5 text-sm bg-white text-blue-900 font-bold rounded-lg hover:bg-blue-100 transition"
+  >
+    Send
+  </button>
+
+</form>
             </div>
             <div class="mt-6">
               <ul class="flex gap-2 flex-col">

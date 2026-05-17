@@ -46,7 +46,7 @@
           <ul class="flex gap-8 font-semibold text-slate-700">
             <li><a href="home-page.jsp" class="hover:text-blue-600">Home</a></li>
             <li><a href="about.jsp" class="hover:text-blue-600">About</a></li>
-            <li><a href="#" class="hover:text-blue-600">Events</a></li>
+            <li><a href="member-dashboard.jsp" class="hover:text-blue-600">Events</a></li>
             <li><a href="#" class="hover:text-blue-600">Contact</a></li>
           </ul>
 
@@ -350,23 +350,7 @@
 
             <div class="flex flex-col gap-3 w-[280px]">
               <h3 class="text-white font-bold text-sm font-mono">Contact Us</h3>
-<!-- 
-              <input
-                type="email"
-                placeholder="Your Email"
-                class="p-3 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400"
-              />
-              <textarea
-                placeholder="Your Message"
-                rows="2"
-                class="p-4 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400 resize-none"
-              ></textarea>
-              <button
-                type="button"
-                class="px-4 py-1.5 text-sm bg-white text-blue-900 font-bold rounded-lg hover:bg-blue-100 transition"
-              >
-                Send
-              </button> -->
+
             <form action="/ContactServlet" method="post" class="flex flex-col gap-3">
 
 

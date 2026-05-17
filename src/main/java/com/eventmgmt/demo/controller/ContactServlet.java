@@ -25,11 +25,9 @@ public class ContactServlet extends HttpServlet {
         contact.setEmail(email);
         contact.setMessage(message);
 
-        // 3. Send to DAO
         ContactDAO dao = new ContactDAO();
         boolean isSaved = dao.saveMessage(contact);
 
-        // 4. Redirect based on result
         if (isSaved) {
             response.sendRedirect("about.jsp?success=true");
         } else {
