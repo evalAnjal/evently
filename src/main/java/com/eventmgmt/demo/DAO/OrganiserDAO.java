@@ -91,6 +91,24 @@ public class OrganiserDAO {
     }
 
     /**
+     * Get organiser by email address
+     */
+    public Organiser getOrganiserByEmail(String email) {
+        String sql = "SELECT * FROM organisers WHERE email = ?";
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return mapResultSetToOrganiser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Get all unverified organisers (for SUPER_ADMIN review)
      */
     public List<Organiser> getUnverifiedOrganisers() {

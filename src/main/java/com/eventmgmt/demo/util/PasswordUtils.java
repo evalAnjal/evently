@@ -21,6 +21,16 @@ public final class PasswordUtils {
         if (plainPassword == null || hashedPassword == null || hashedPassword.isBlank()) {
             return false;
         }
-        return BCrypt.checkpw(plainPassword, hashedPassword);
+        // Support legacy plaintext passwords stored in DB: if the stored value
+        // doesn't look like a bcrypt hash, fall back to plain equality.
+        try {
+            if (hashedPassword.startsWith("$2a$") || hashedPassword.startsWith("$2b$") || hashedPassword.startsWith("$2y$") || hashedPassword.startsWith("$2x$")) {
+                return BCrypt.checkpw(plainPassword, hashedPassword);
+            }
+        } catch (IllegalArgumentException e) {
+            // Invalid salt/version in stored hash. Fall back to plaintext compare below.
+        }
+
+        return plainPassword.equals(hashedPassword);
     }
 }

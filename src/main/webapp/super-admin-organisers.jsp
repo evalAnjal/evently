@@ -15,7 +15,10 @@
             <h1 class="text-2xl font-bold text-slate-900">Organiser Approval Queue</h1>
             <p class="text-sm text-slate-600">Approve organisation registrations to grant ADMIN access.</p>
         </div>
-        <a href="${pageContext.request.contextPath}/logout" class="text-indigo-600 text-sm">Logout</a>
+        <div class="flex items-center gap-4">
+            <a href="${pageContext.request.contextPath}/super-admin/dashboard" class="text-slate-700 text-sm">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/logout" class="text-indigo-600 text-sm">Logout</a>
+        </div>
     </header>
 
     <c:if test="${param.success == 'approved'}">
