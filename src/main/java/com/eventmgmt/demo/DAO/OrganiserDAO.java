@@ -145,6 +145,21 @@ public class OrganiserDAO {
     }
 
     /**
+     * Deactivate a verified organiser (set verified = FALSE)
+     */
+    public boolean deactivateOrganiser(int organiserId) throws SQLException {
+        String sql = "UPDATE organisers SET verified = FALSE, updated_at = now() WHERE id = ?";
+
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, organiserId);
+
+            int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+
+    /**
      * Reject/delete an organiser application
      */
     public boolean rejectOrganiser(int organiserId) throws SQLException {

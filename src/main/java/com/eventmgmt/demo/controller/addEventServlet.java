@@ -30,6 +30,9 @@ public class addEventServlet extends HttpServlet {
         }
 
         Organiser organiser = organiserDAO.getOrganiserByUserId(user.getId());
+        if (organiser == null) {
+            organiser = organiserDAO.getOrganiserByEmail(user.getEmail());
+        }
         if (organiser == null || !organiser.isVerified()) {
             response.sendRedirect(request.getContextPath() + "/admin-dashboard?error=not_verified");
             return;
@@ -63,6 +66,9 @@ public class addEventServlet extends HttpServlet {
         newEvent.setCreatedByEmail(user.getEmail());
 
         String organiserDistrict = organiser.getDistrict();
+        if ((organiserDistrict == null || organiserDistrict.isBlank()) && user.getDistrict() != null) {
+            organiserDistrict = user.getDistrict();
+        }
         if (organiserDistrict == null || organiserDistrict.isBlank()) {
             response.sendRedirect(request.getContextPath() + "/admin-dashboard?error=district_missing");
             return;

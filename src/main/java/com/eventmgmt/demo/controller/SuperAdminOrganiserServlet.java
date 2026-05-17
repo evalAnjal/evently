@@ -30,7 +30,9 @@ public class SuperAdminOrganiserServlet extends HttpServlet {
         }
 
         List<Organiser> pending = organiserDAO.getUnverifiedOrganisers();
+        List<Organiser> verified = organiserDAO.getVerifiedOrganisers();
         request.setAttribute("pendingOrganisers", pending);
+        request.setAttribute("verifiedOrganisers", verified);
         request.getRequestDispatcher("/super-admin-organisers.jsp").forward(request, response);
     }
 
@@ -67,6 +69,9 @@ public class SuperAdminOrganiserServlet extends HttpServlet {
             } else if ("reject".equals(action)) {
                 organiserDAO.rejectOrganiser(organiserId);
                 response.sendRedirect(request.getContextPath() + "/super-admin/organisers?success=rejected");
+            } else if ("deactivate".equals(action)) {
+                organiserDAO.deactivateOrganiser(organiserId);
+                response.sendRedirect(request.getContextPath() + "/super-admin/organisers?success=deactivated");
             } else {
                 response.sendRedirect(request.getContextPath() + "/super-admin/organisers?error=action");
             }

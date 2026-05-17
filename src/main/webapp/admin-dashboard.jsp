@@ -55,6 +55,11 @@
             You can only create events in your organisation district.
         </div>
     </c:if>
+    <c:if test="${param.error == 'district_missing'}">
+        <div class="mb-4 rounded-md border border-red-200 bg-red-50 text-red-800 px-4 py-3 text-sm">
+            Your organiser district is missing. Please update organiser details before creating an event.
+        </div>
+    </c:if>
 
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <article class="bg-white border border-blue-100 rounded-lg p-4 shadow-sm">
