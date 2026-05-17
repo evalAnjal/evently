@@ -42,9 +42,20 @@ public class OrganiserDAO {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                String hashedPassword = rs.getString("password");
-                if (PasswordUtils.verifyPassword(password, hashedPassword)) {
+                String stored = rs.getString("password");
+                if (PasswordUtils.verifyPassword(password, stored)) {
                     org = mapResultSetToOrganiser(rs);
+
+                    // Upgrade legacy plaintext organiser passwords to bcrypt
+                    if (stored != null && !stored.startsWith("$2")) {
+                        String newHash = PasswordUtils.hashPassword(password);
+                        try (PreparedStatement up = conn.prepareStatement("UPDATE organisers SET password = ? WHERE id = ?")) {
+                            up.setString(1, newHash);
+                            up.setInt(2, rs.getInt("id"));
+                            up.executeUpdate();
+                        } catch (SQLException ignored) {
+                        }
+                    }
                 }
             }
         } catch (SQLException e) {

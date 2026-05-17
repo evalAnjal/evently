@@ -16,8 +16,8 @@ public class UserDAO {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                String hashedPassword = rs.getString("password");
-                if (PasswordUtils.verifyPassword(password, hashedPassword)) {
+                String stored = rs.getString("password");
+                if (PasswordUtils.verifyPassword(password, stored)) {
                     user = new User();
                     user.setId(rs.getInt("id"));
                     user.setEmail(rs.getString("email"));
@@ -25,6 +25,18 @@ public class UserDAO {
                     user.setUsername(rs.getString("username"));
                     if (hasColumn(rs, "district")) {
                         user.setDistrict(rs.getString("district"));
+                    }
+
+                    // If the stored password looked like a legacy plaintext value,
+                    // upgrade it to a bcrypt hash so future logins use bcrypt.
+                    if (stored != null && !stored.startsWith("$2")) {
+                        String newHash = PasswordUtils.hashPassword(password);
+                        try (PreparedStatement up = conn.prepareStatement("UPDATE users SET password = ? WHERE id = ?")) {
+                            up.setString(1, newHash);
+                            up.setInt(2, user.getId());
+                            up.executeUpdate();
+                        } catch (SQLException ignored) {
+                        }
                     }
                 }
             }

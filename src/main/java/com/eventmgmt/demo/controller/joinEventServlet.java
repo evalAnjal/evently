@@ -22,7 +22,6 @@ public class joinEventServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String eventIdStr = request.getParameter("eventId");
-        String userIdStr = request.getParameter("userId");
         String phone = request.getParameter("phone");
         String ageStr = request.getParameter("age");
         String preference = request.getParameter("preference");
@@ -35,8 +34,14 @@ public class joinEventServlet extends HttpServlet {
 
         try {
             int eventId = Integer.parseInt(eventIdStr);
-            int userId = Integer.parseInt(userIdStr);
             int age = Integer.parseInt(ageStr);
+
+            // Use session user to determine who is registering
+            com.eventmgmt.demo.model.User sessionUser = (com.eventmgmt.demo.model.User) request.getSession().getAttribute("user");
+            if (sessionUser == null) {
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                return;
+            }
 
             // Server-side validation: do not allow joining past events
             EventDAO eDAO = new EventDAO();
@@ -51,7 +56,15 @@ public class joinEventServlet extends HttpServlet {
                 return;
             }
 
-            boolean success = regDAO.joinEvent(userId, eventId, phone.trim(), age, preference.trim());
+            // Enforce district match: member cannot join events outside their district
+            String userDistrict = sessionUser.getDistrict();
+            String eventDistrict = event.getDistrict();
+            if (userDistrict != null && eventDistrict != null && !userDistrict.equalsIgnoreCase(eventDistrict)) {
+                response.sendRedirect(request.getContextPath() + "/Member-dashboard?error=wrong_district");
+                return;
+            }
+
+            boolean success = regDAO.joinEvent(sessionUser.getId(), eventId, phone.trim(), age, preference.trim());
             if (success) {
                 response.sendRedirect(request.getContextPath() + "/Member-dashboard?success=1");
             } else {
