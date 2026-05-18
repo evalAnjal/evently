@@ -264,10 +264,10 @@
 
   </div>
 
-  <!-- TESTIMONIAL GRID -->
+  <!-- Testimonial card grid -->
   <div class="grid md:grid-cols-3 gap-8">
 
-    <!-- CARD 1 -->
+    <!-- Testimonial 1: Student -->
     <div class="p-6 rounded-3xl bg-blue-50 border border-blue-100 shadow">
 
       <p class="text-slate-600 leading-7 mb-5">
@@ -276,7 +276,7 @@
       </p>
 
       <div class="flex items-center gap-3">
-
+        <!-- Avatar initials -->
         <div class="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold">
           S
         </div>
@@ -290,7 +290,7 @@
 
     </div>
 
-    <!-- CARD 2 -->
+    <!-- Testimonial 2: Club Coordinator -->
     <div class="p-6 rounded-3xl bg-blue-50 border border-blue-100 shadow">
 
       <p class="text-slate-600 leading-7 mb-5">
@@ -300,6 +300,7 @@
 
       <div class="flex items-center gap-3">
 
+        <!-- Avatar initials -->
         <div class="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold">
           A
         </div>
@@ -313,7 +314,7 @@
 
     </div>
 
-    <!-- CARD 3 -->
+     <!-- Testimonial 3: Event Organizer -->
     <div class="p-6 rounded-3xl bg-blue-50 border border-blue-100 shadow">
 
       <p class="text-slate-600 leading-7 mb-5">
@@ -323,6 +324,7 @@
 
       <div class="flex items-center gap-3">
 
+        <!-- Avatar initials -->
         <div class="w-10 h-10 rounded-full bg-blue-900 text-white flex items-center justify-center font-bold">
           P
         </div>
@@ -339,9 +341,14 @@
   </div>
 
 </section>
+
+      <!-- ===================== FOOTER ===================== -->
+      <!-- Dark blue footer with social links, contact form, and nav links -->
        <footer class="w-500 bg-blue-900 p-6 mt-10 h-80 rounded-3xl">
         <div class="footer-content">
           <div class="flex justify-around">
+
+            <!-- Social media links with icons -->
             <div>
               <ul class="flex gap-2 font-mono flex-col mt-6">
                 <li class="text-white hover:text-blue-300">
@@ -372,6 +379,7 @@
               </ul>
             </div>
 
+            <!-- Contact form: submits to /ContactServlet via POST -->
             <div class="flex flex-col gap-3 w-[280px]">
               <h3 class="text-white font-bold text-sm font-mono">Contact Us</h3>
 
