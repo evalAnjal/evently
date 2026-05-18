@@ -146,7 +146,12 @@
                             <span class="text-base">👥</span>
                             <span>
                                 <c:choose>
-                                    <c:when test="${not empty event.capacity}">${event.capacity} seats</c:when>
+                                    <c:when test="${not empty event.capacity}">
+                                        <c:choose>
+                                            <c:when test="${registrationCounts[event.id] == null}">${event.capacity} seats</c:when>
+                                            <c:otherwise>${registrationCounts[event.id]} / ${event.capacity} registered</c:otherwise>
+                                        </c:choose>
+                                    </c:when>
                                     <c:otherwise>Unlimited seats</c:otherwise>
                                 </c:choose>
                             </span>
@@ -172,19 +177,29 @@
                             </button>
                         </c:when>
                         <c:otherwise>
-                            <c:if test="${!showPast}">
-                                <button
-                                    type="button"
-                                    class="openJoinModal w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors text-sm"
-                                    data-event-id="${event.id}"
-                                    data-event-title="${event.title}"
-                                    data-event-location="${event.location}">
-                                    Register Now
-                                </button>
-                            </c:if>
-                            <c:if test="${showPast}">
-                                <div class="text-sm text-gray-500 text-center">Event ended</div>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${not empty event.capacity && registrationCounts[event.id] != null && registrationCounts[event.id] ge event.capacity}">
+                                    <button
+                                        type="button"
+                                        class="w-full bg-gray-200 text-gray-600 py-2.5 rounded-lg font-medium cursor-not-allowed text-sm"
+                                        disabled>
+                                        Event Full
+                                    </button>
+                                </c:when>
+                                <c:when test="${!showPast}">
+                                    <button
+                                        type="button"
+                                        class="openJoinModal w-full bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors text-sm"
+                                        data-event-id="${event.id}"
+                                        data-event-title="${event.title}"
+                                        data-event-location="${event.location}">
+                                        Register Now
+                                    </button>
+                                </c:when>
+                                <c:when test="${showPast}">
+                                    <div class="text-sm text-gray-500 text-center">Event ended</div>
+                                </c:when>
+                            </c:choose>
                         </c:otherwise>
                     </c:choose>
                 </div>

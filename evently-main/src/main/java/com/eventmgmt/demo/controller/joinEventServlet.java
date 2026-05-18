@@ -2,7 +2,9 @@ package com.eventmgmt.demo.controller;
 
 import com.eventmgmt.demo.DAO.registrationDAO;
 import com.eventmgmt.demo.model.User;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import com.eventmgmt.demo.model.Event;
 import com.eventmgmt.demo.DAO.EventDAO;
 
@@ -80,9 +82,16 @@ public class joinEventServlet extends HttpServlet {
     registrationDAO regDAO = new registrationDAO();
     List<Integer> joinedIds = regDAO.getJoinedEventIds(user.getId());
 
-  
+    Map<Integer, Integer> registrationCounts = new HashMap<>();
+    for (Event event : allEvents) {
+        if (event.getCapacity() != null && event.getCapacity() > 0) {
+            registrationCounts.put(event.getId(), eDAO.getRegistrationCountForEvent(event.getId()));
+        }
+    }
+
     request.setAttribute("events", allEvents);
     request.setAttribute("joinedIds", joinedIds);
+    request.setAttribute("registrationCounts", registrationCounts);
 
     request.getRequestDispatcher("/Member-dashboard").forward(request, response);
 }

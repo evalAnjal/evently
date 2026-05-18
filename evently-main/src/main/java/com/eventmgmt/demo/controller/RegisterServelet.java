@@ -13,7 +13,7 @@ import com.eventmgmt.demo.DAO.OrganiserDAO;
 import com.eventmgmt.demo.DAO.UserDAO;
 import com.eventmgmt.demo.model.Organiser;
 import com.eventmgmt.demo.model.User;
-import com.eventmgmt.demo.util.PasswordUtil;
+import com.eventmgmt.demo.util.PasswordUtils;
 
 @WebServlet("/registerProcess")
 public class RegisterServelet extends HttpServlet {
@@ -42,7 +42,7 @@ public class RegisterServelet extends HttpServlet {
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setEmail(email);
-        String hashedPassword = PasswordUtil.hashPassword(pass);
+        String hashedPassword = PasswordUtils.hashPassword(pass);
         newUser.setPassword(hashedPassword);
         newUser.setDistrict(district);
 
