@@ -16,12 +16,14 @@
     />
 
     <style>
+      /* Page background: soft gradient from indigo tint to near-white */
       body {
         background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%);
         font-family: "Inter", sans-serif;
         color: #0f172a;
       }
 
+      /* Navbar: frosted glass effect with rounded pill shape */
       nav {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(12px);
@@ -30,6 +32,7 @@
         height: 80px;
       }
 
+      /* Reusable card shadow utility */
       .card {
         box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
       }
@@ -37,12 +40,16 @@
   </head>
 
   <body>
+    <!-- PAGE WRAPPER: max-width container centered with padding -->
     <div class="max-w-[1180px] mx-auto px-6 py-8">
-      <!-- NAVBAR -->
+      <!-- ===================== NAVBAR ===================== -->
       <div class="flex justify-center mt-10">
         <nav class="w-full flex justify-between items-center px-8 py-4">
+
+          <!-- Brand logo -->
           <img src="../../../logoBlue.png" class="h-24" />
 
+          <!-- Navigation links -->
           <ul class="flex gap-8 font-semibold text-slate-700">
             <li><a href="home-page.jsp" class="hover:text-blue-600">Home</a></li>
             <li><a href="about.jsp" class="hover:text-blue-600">About</a></li>
@@ -50,6 +57,7 @@
             <li><a href="#" class="hover:text-blue-600">Contact</a></li>
           </ul>
 
+          <!-- Login CTA button -->
           <button
             class="bg-blue-900 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700"
           >
@@ -58,7 +66,8 @@
         </nav>
       </div>
 
-      <!-- HERO -->
+      <!-- ===================== HERO SECTION ===================== -->
+      <!-- Centered intro block with page title and short description -->
       <section class="mt-14 bg-white rounded-[36px] p-12 card text-center">
         <h1
           class="text-6xl font-bold mb-6"
@@ -74,9 +83,11 @@
         </p>
       </section>
 
-      <!-- ABOUT SECTION (NEW LAYOUT) -->
+      <!-- ===================== ABOUT SECTION ===================== -->
+      <!-- Two-column layout: feature list (left) + event image (right) -->
       <section class="mt-12 grid lg:grid-cols-3 gap-8">
-        <!-- LEFT INFO -->
+
+        <!-- LEFT: Why Choose Evently + numbered feature list -->
         <div class="lg:col-span-2 bg-white p-10 rounded-[36px] card">
           <h2 class="text-3xl font-bold text-blue-900 mb-6">
             Why Choose Evently?
@@ -88,8 +99,10 @@
             organizers can focus on experience rather than complexity.
           </p>
 
-          <!-- FEATURES -->
+          <!-- Numbered feature list -->
           <div class="space-y-5">
+
+            <!-- Feature 1: Easy Event Creation -->
             <div class="flex gap-4">
               <div
                 class="bg-blue-900 text-white w-10 h-10 flex items-center justify-center rounded-full"
@@ -104,6 +117,7 @@
               </div>
             </div>
 
+            <!-- Feature 2: Ticket & Registration -->
             <div class="flex gap-4">
               <div
                 class="bg-blue-900 text-white w-10 h-10 flex items-center justify-center rounded-full"
@@ -118,6 +132,7 @@
               </div>
             </div>
 
+            <!-- Feature 3: Campus Focused -->
             <div class="flex gap-4">
               <div
                 class="bg-blue-900 text-white w-10 h-10 flex items-center justify-center rounded-full"
@@ -134,13 +149,14 @@
           </div>
         </div>
 
-        <!-- RIGHT IMAGE -->
+        <!-- RIGHT: Event image card -->
         <div class="bg-white p-6 rounded-[36px] card relative">
           <img
             src="./event.jpg"
             class="rounded-[30px] h-[420px] w-full object-cover"
           />
 
+          <!-- Floating stat badge (currently commented out) -->
           <!-- <div
             class="absolute bottom-10 left-10 bg-white p-5 rounded-2xl shadow-xl"
           >
@@ -150,10 +166,11 @@
         </div> -->
       </section>
 
-      <!-- MISSION & VISION -->
+<!-- ===================== MISSION & VISION ===================== -->
+<!-- Side-by-side cards explaining the platform's purpose and goals -->
 <section class="mt-12 grid md:grid-cols-2 gap-8">
 
-  <!-- MISSION -->
+  <!-- Mission card -->
   <div class="bg-white p-10 rounded-[36px] shadow-xl">
     <h2 class="text-3xl font-bold text-blue-900 mb-4"
         style="font-family:'Caprasimo', cursive;">
@@ -167,7 +184,7 @@
     </p>
   </div>
 
-  <!-- VISION -->
+  <!-- Vision card -->
   <div class="bg-white p-10 rounded-[36px] shadow-xl">
     <h2 class="text-3xl font-bold text-blue-900 mb-4"
         style="font-family:'Caprasimo', cursive;">
@@ -182,7 +199,8 @@
 
 </section>
 
-      <!-- STATS (FIXED - NO FLOATING) -->
+      <!-- ===================== STATS SECTION ===================== -->
+      <!-- Four key impact metrics displayed in a responsive grid -->
       <section class="mt-12 bg-white rounded-[36px] p-10 card">
         <h2
           class="text-3xl font-bold text-blue-900 text-center mb-8"
@@ -192,6 +210,8 @@
         </h2>
 
         <div class="grid md:grid-cols-4 gap-6">
+
+          <!-- Stat: Total Users -->
           <div
             class="bg-blue-50 p-6 rounded-2xl text-center border border-blue-100"
           >
@@ -199,6 +219,7 @@
             <p class="text-slate-600 mt-2">Users</p>
           </div>
 
+          <!-- Stat: Total Events -->
           <div
             class="bg-blue-50 p-6 rounded-2xl text-center border border-blue-100"
           >
@@ -206,6 +227,7 @@
             <p class="text-slate-600 mt-2">Events</p>
           </div>
 
+          <!-- Stat: Active Clubs -->
           <div
             class="bg-blue-50 p-6 rounded-2xl text-center border border-blue-100"
           >
@@ -213,6 +235,7 @@
             <p class="text-slate-600 mt-2">Clubs</p>
           </div>
 
+          <!-- Stat: Year Founded -->
           <div
             class="bg-blue-50 p-6 rounded-2xl text-center border border-blue-100"
           >
@@ -221,10 +244,11 @@
           </div>
         </div>
       </section>
-      <!-- TESTIMONIALS -->
+      <!-- ===================== TESTIMONIALS SECTION ===================== -->
+      <!-- Student feedback displayed as a 3-column card grid -->
 <section class="mt-14 bg-white rounded-[36px] p-10 shadow-xl">
 
-  <!-- TITLE -->
+  <!-- Section heading -->
   <div class="text-center mb-10">
 
     <h2
