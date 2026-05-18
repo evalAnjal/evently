@@ -11,6 +11,7 @@ public class Event {
     private Integer organiserId;
     private String district;
     private String createdByEmail;
+    private String eventType;
     private Integer capacity;
 
     public int getId() {
@@ -83,6 +84,14 @@ public class Event {
 
     public void setCreatedByEmail(String createdByEmail) {
         this.createdByEmail = createdByEmail;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
     public Integer getCapacity() {

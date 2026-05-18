@@ -76,7 +76,7 @@ public class EventDAO {
     }
 
     public boolean createEvent(Event event) {
-        String sql = "INSERT INTO events (title, description, location, event_date, status, organiser_id, district, capacity, created_by_email) VALUES (?, ?, ?, ?, 'APPROVED', ?, ?, ?, ?)";
+        String sql = "INSERT INTO events (title, description, location, event_date, status, organiser_id, district, created_by_email, event_type, capacity) VALUES (?, ?, ?, ?, 'APPROVED', ?, ?, ?, ?, ?)";
         try (Connection conn = DBconnection.getConnection();
              PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, event.getTitle());
@@ -85,8 +85,17 @@ public class EventDAO {
             st.setTimestamp(4, event.getEventDate());
             st.setObject(5, event.getOrganiserId(), Types.INTEGER);
             st.setString(6, event.getDistrict());
-            st.setObject(7, event.getCapacity(), Types.INTEGER);
-            st.setString(8, event.getCreatedByEmail());
+            st.setString(7, event.getCreatedByEmail());
+            if (event.getEventType() != null) {
+                st.setString(8, event.getEventType());
+            } else {
+                st.setNull(8, Types.VARCHAR);
+            }
+            if (event.getCapacity() != null) {
+                st.setInt(9, event.getCapacity());
+            } else {
+                st.setNull(9, Types.INTEGER);
+            }
 
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0; // Return true if the event was created successfully
@@ -374,6 +383,9 @@ public class EventDAO {
         e.setStatus(rs.getString("status"));
         if (hasColumn(rs, "capacity")) {
             e.setCapacity((Integer) rs.getObject("capacity"));
+        }
+        if (hasColumn(rs, "event_type")) {
+            e.setEventType(rs.getString("event_type"));
         }
         if (hasColumn(rs, "created_by_email")) {
             e.setCreatedByEmail(rs.getString("created_by_email"));

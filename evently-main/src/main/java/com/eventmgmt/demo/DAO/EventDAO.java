@@ -76,6 +76,39 @@ public class EventDAO {
     }
 
     public boolean createEvent(Event event) {
+        String sql = "INSERT INTO events (title, description, location, event_date, status, organiser_id, district, created_by_email, event_type, capacity) VALUES (?, ?, ?, ?, 'APPROVED', ?, ?, ?, ?, ?)";
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, event.getTitle());
+            st.setString(2, event.getDescription());
+            st.setString(3, event.getLocation());
+            st.setTimestamp(4, event.getEventDate());
+            st.setObject(5, event.getOrganiserId(), Types.INTEGER);
+            st.setString(6, event.getDistrict());
+            st.setString(7, event.getCreatedByEmail());
+            if (event.getEventType() != null) {
+                st.setString(8, event.getEventType());
+            } else {
+                st.setNull(8, Types.VARCHAR);
+            }
+            if (event.getCapacity() != null) {
+                st.setInt(9, event.getCapacity());
+            } else {
+                st.setNull(9, Types.INTEGER);
+            }
+
+            int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0; // Return true if the event was created successfully
+        } catch (SQLException e) {
+            if ("42703".equals(e.getSQLState())) {
+                return createEventWithoutEventType(event);
+            }
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
+    }
+
+    private boolean createEventWithoutEventType(Event event) {
         String sql = "INSERT INTO events (title, description, location, event_date, status, organiser_id, district, created_by_email, capacity) VALUES (?, ?, ?, ?, 'APPROVED', ?, ?, ?, ?)";
         try (Connection conn = DBconnection.getConnection();
              PreparedStatement st = conn.prepareStatement(sql)) {
@@ -93,13 +126,13 @@ public class EventDAO {
             }
 
             int rowsAffected = st.executeUpdate();
-            return rowsAffected > 0; // Return true if the event was created successfully
-        } catch (SQLException e) {
-            if ("42703".equals(e.getSQLState())) {
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            if ("42703".equals(ex.getSQLState())) {
                 return createEventWithoutCapacity(event);
             }
-            e.printStackTrace();
-            return false; // Return false if there was an error
+            ex.printStackTrace();
+            return false;
         }
     }
 
@@ -409,6 +442,9 @@ public class EventDAO {
         }
         if (hasColumn(rs, "district")) {
             e.setDistrict(rs.getString("district"));
+        }
+        if (hasColumn(rs, "event_type")) {
+            e.setEventType(rs.getString("event_type"));
         }
         if (hasColumn(rs, "capacity")) {
             e.setCapacity((Integer) rs.getObject("capacity"));

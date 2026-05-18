@@ -208,6 +208,11 @@
                             <input id="capacity" name="capacity" type="number" min="1" required class="w-full rounded-md border border-blue-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" />
                             <p class="mt-1 text-xs text-slate-500">Maximum number of registrations allowed for this event.</p>
                         </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1" for="eventType">Event Type</label>
+                            <input id="eventType" name="eventType" type="text" required class="w-full rounded-md border border-blue-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Conference, Workshop, Meetup" />
+                            <p class="mt-1 text-xs text-slate-500">Describe the type of event to help members find what matters.</p>
+                        </div>
                     </div>
                     <div class="flex justify-end gap-2">
                         <button id="cancelCreateModal" type="button" class="rounded-md border border-blue-200 px-4 py-2 text-sm text-slate-700 hover:bg-blue-50">Cancel</button>

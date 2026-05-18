@@ -39,8 +39,9 @@ public class addEventServlet extends HttpServlet {
         String description = request.getParameter("description");
         String eventDateStr = request.getParameter("eventDate");
         String capacityStr = request.getParameter("capacity");
+        String eventType = request.getParameter("eventType");
 
-        if (title == null || title.isBlank() || eventDateStr == null || eventDateStr.isBlank() || capacityStr == null || capacityStr.isBlank()) {
+        if (title == null || title.isBlank() || eventDateStr == null || eventDateStr.isBlank() || capacityStr == null || capacityStr.isBlank() || eventType == null || eventType.isBlank()) {
             response.sendRedirect(request.getContextPath() + "/admin-dashboard?error=missing");
             return;
         }
@@ -78,6 +79,7 @@ public class addEventServlet extends HttpServlet {
         }
         newEvent.setLocation(organiserDistrict.trim());
         newEvent.setDistrict(organiserDistrict.trim());
+        newEvent.setEventType(eventType.trim());
         newEvent.setCapacity(capacity);
 
         if(eventDAO.createEvent(newEvent)) {
