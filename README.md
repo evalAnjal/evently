@@ -442,4 +442,8 @@ title=Tech Conference&description=Learn new technologies&location=Hall A&eventDa
 - [ ] CI/CD pipeline (GitHub Actions)
 
 ### Contributors
-- Suman Rai (working on it)
+- Anjal Sharma Phuyal
+- Aakanksha Sedhai
+- Karuna Kumari Shrestha
+- Sachin Khadka
+- Suman Rai 
