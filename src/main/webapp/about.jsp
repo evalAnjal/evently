@@ -46,14 +46,14 @@
           <ul class="flex gap-8 font-semibold text-slate-700">
             <li><a href="home-page.jsp" class="hover:text-blue-600">Home</a></li>
             <li><a href="about.jsp" class="hover:text-blue-600">About</a></li>
-            <li><a href="member-dashboard.jsp" class="hover:text-blue-600">Events</a></li>
-            <li><a href="#" class="hover:text-blue-600">Contact</a></li>
+            <!-- <li><a href="member-dashboard.jsp" class="hover:text-blue-600">Events</a></li> -->
+             <li><a href="${pageContext.request.contextPath}/CheckAuthServlet">Events</a></li>
           </ul>
 
           <button
             class="bg-blue-900 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700"
           >
-            Login
+           <a href="index.jsp"> Login</a>
           </button>
         </nav>
       </div>

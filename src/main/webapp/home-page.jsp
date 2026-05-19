@@ -246,8 +246,8 @@
               <ul>
                 <li><a href="#" class="">Home</a></li>
                 <li><a href="about.jsp">About US</a></li>
-                <li><a href="member-dashboard.jsp">Events</a></li>
-                <li><a href="#">Contact</a></li>
+                <!-- <li><a href="member-dashboard.jsp">Events</a></li> -->
+                <li><a href="${pageContext.request.contextPath}/CheckAuthServlet">Events</a></li>
 
               </ul>
             </div>
