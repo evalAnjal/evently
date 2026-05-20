@@ -37,7 +37,7 @@
 
     <form action="/loginProcess" method="POST" class="space-y-6">
         <div>
-            <label class="block text-sm font-medium text-gray-700">Email Address</label>
+            <label class="block text-sm font-medium text-gray-700">EMAIL ADDRESS</label>
             <input type="email" name="email" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
         </div>
         <div>
