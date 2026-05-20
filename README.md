@@ -441,3 +441,9 @@ title=Tech Conference&description=Learn new technologies&location=Hall A&eventDa
 - [ ] Docker containerization
 - [ ] CI/CD pipeline (GitHub Actions)
 
+### Contributors
+- Anjal Sharma Phuyal
+- Aakanksha Sedhai
+- Karuna Kumari Shrestha
+- Sachin Khadka
+- Suman Rai 

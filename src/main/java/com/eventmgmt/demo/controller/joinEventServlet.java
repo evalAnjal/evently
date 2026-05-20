@@ -56,7 +56,17 @@ public class joinEventServlet extends HttpServlet {
                 return;
             }
 
-            // Enforce district match: member cannot join events outside their district
+            // 1) Enforce capacity if set
+            Integer capacity = event.getCapacity();
+            if (capacity != null && capacity > 0) {
+                int currentRegistrationCount = eDAO.getRegistrationCountForEvent(eventId);
+                if (currentRegistrationCount >= capacity) {
+                    response.sendRedirect(request.getContextPath() + "/Member-dashboard?error=event_full");
+                    return;
+                }
+            }
+
+            // 2) Enforce district match: member cannot join events outside their district
             String userDistrict = sessionUser.getDistrict();
             String eventDistrict = event.getDistrict();
             if (userDistrict != null && eventDistrict != null && !userDistrict.equalsIgnoreCase(eventDistrict)) {
@@ -75,22 +85,29 @@ public class joinEventServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
-    User user = (User) request.getSession().getAttribute("user");
-    
-    // 1. Fetch all events
-    EventDAO eDAO = new EventDAO();
-    List<Event> allEvents = eDAO.getAllApprovedEvents();
-    
-    registrationDAO regDAO = new registrationDAO();
-    List<Integer> joinedIds = regDAO.getJoinedEventIds(user.getId());
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
 
-  
-    request.setAttribute("events", allEvents);
-    request.setAttribute("joinedIds", joinedIds);
+        // 1. Fetch all events
+        EventDAO eDAO = new EventDAO();
+        List<Event> allEvents = eDAO.getAllApprovedEvents();
 
-    request.getRequestDispatcher("/Member-dashboard").forward(request, response);
-}
+        registrationDAO regDAO = new registrationDAO();
+        List<Integer> joinedIds = regDAO.getJoinedEventIds(user.getId());
+
+        java.util.Map<Integer, Integer> registrationCounts = new java.util.HashMap<>();
+        for (Event event : allEvents) {
+            if (event.getCapacity() != null && event.getCapacity() > 0) {
+                registrationCounts.put(event.getId(), eDAO.getRegistrationCountForEvent(event.getId()));
+            }
+        }
+
+        request.setAttribute("events", allEvents);
+        request.setAttribute("joinedIds", joinedIds);
+        request.setAttribute("registrationCounts", registrationCounts);
+
+        request.getRequestDispatcher("/Member-dashboard").forward(request, response);
+    }
 }
 
 

@@ -76,7 +76,7 @@ public class EventDAO {
     }
 
     public boolean createEvent(Event event) {
-        String sql = "INSERT INTO events (title, description, location, event_date, status, organiser_id, district, created_by_email) VALUES (?, ?, ?, ?, 'APPROVED', ?, ?, ?)";
+        String sql = "INSERT INTO events (title, description, location, event_date, status, organiser_id, district, created_by_email, event_type, capacity) VALUES (?, ?, ?, ?, 'APPROVED', ?, ?, ?, ?, ?)";
         try (Connection conn = DBconnection.getConnection();
              PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, event.getTitle());
@@ -86,6 +86,16 @@ public class EventDAO {
             st.setObject(5, event.getOrganiserId(), Types.INTEGER);
             st.setString(6, event.getDistrict());
             st.setString(7, event.getCreatedByEmail());
+            if (event.getEventType() != null) {
+                st.setString(8, event.getEventType());
+            } else {
+                st.setNull(8, Types.VARCHAR);
+            }
+            if (event.getCapacity() != null) {
+                st.setInt(9, event.getCapacity());
+            } else {
+                st.setNull(9, Types.INTEGER);
+            }
 
             int rowsAffected = st.executeUpdate();
             return rowsAffected > 0; // Return true if the event was created successfully
@@ -343,6 +353,26 @@ public class EventDAO {
         return null;
     }
 
+    public int getRegistrationCountForEvent(int eventId) {
+        String[] fallbackQueries = new String[] {
+            "SELECT COUNT(*) FROM registrations WHERE event_id = ?",
+            "SELECT COUNT(*) FROM event_registrations WHERE event_id = ?"
+        };
+        for (String sql : fallbackQueries) {
+            try (Connection conn = DBconnection.getConnection();
+                 PreparedStatement st = conn.prepareStatement(sql)) {
+                st.setInt(1, eventId);
+                ResultSet rs = st.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            } catch (SQLException ignored) {
+                // try next fallback
+            }
+        }
+        return 0;
+    }
+
     private Event mapEvent(ResultSet rs) throws SQLException {
         Event e = new Event();
         e.setId(rs.getInt("id"));
@@ -351,6 +381,12 @@ public class EventDAO {
         e.setLocation(rs.getString("location"));
         e.setEventDate(rs.getTimestamp("event_date"));
         e.setStatus(rs.getString("status"));
+        if (hasColumn(rs, "capacity")) {
+            e.setCapacity((Integer) rs.getObject("capacity"));
+        }
+        if (hasColumn(rs, "event_type")) {
+            e.setEventType(rs.getString("event_type"));
+        }
         if (hasColumn(rs, "created_by_email")) {
             e.setCreatedByEmail(rs.getString("created_by_email"));
         }

@@ -129,6 +129,10 @@
                             <span>${event.location}</span>
                         </div>
                         <div class="flex items-center gap-2 text-sm text-gray-700">
+                            <span class="text-base">🏷️</span>
+                            <span>${empty event.eventType ? 'General' : event.eventType}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-700">
                             <span class="text-base">📅</span>
                             <span>
                                <!-- not register if event date is in the past -->

@@ -41,8 +41,10 @@ public class addEventServlet extends HttpServlet {
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String eventDateStr = request.getParameter("eventDate");
+        String capacityStr = request.getParameter("capacity");
+        String eventType = request.getParameter("eventType");
 
-        if (title == null || title.isBlank() || eventDateStr == null || eventDateStr.isBlank()) {
+        if (title == null || title.isBlank() || eventDateStr == null || eventDateStr.isBlank() || capacityStr == null || capacityStr.isBlank() || eventType == null || eventType.isBlank()) {
             response.sendRedirect(request.getContextPath() + "/admin-dashboard?error=missing");
             return;
         }
@@ -57,12 +59,26 @@ public class addEventServlet extends HttpServlet {
             return;
         }
 
+        int capacity;
+        try {
+            capacity = Integer.parseInt(capacityStr.trim());
+            if (capacity < 1) {
+                response.sendRedirect(request.getContextPath() + "/admin-dashboard?error=capacity");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/admin-dashboard?error=capacity");
+            return;
+        }
+
         Event newEvent = new Event();
         newEvent.setTitle(title.trim());
         newEvent.setDescription(description == null ? "" : description.trim());
         newEvent.setEventDate(eventDate);
         newEvent.setStatus("APPROVED");
         newEvent.setOrganiserId(organiser.getId());
+        newEvent.setEventType(eventType.trim());
+        newEvent.setCapacity(capacity);
         newEvent.setCreatedByEmail(user.getEmail());
 
         String organiserDistrict = organiser.getDistrict();
