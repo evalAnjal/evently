@@ -23,7 +23,7 @@
 <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
     <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-indigo-600">Evently</h1>
-        <p class="text-gray-500">Welcome back! Please login.</p>
+        <p class="text-gray-500">WELCOME BACK!!!!! Please login.</p>
     </div>
 
     <% String successMessage = (String) request.getAttribute("successMessage"); %>
