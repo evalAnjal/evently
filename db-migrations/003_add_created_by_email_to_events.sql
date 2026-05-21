@@ -2,12 +2,12 @@
 -- Run after 001/002 migrations
 
 ALTER TABLE events
-  ADD COLUMN IF NOT EXISTS created_by_email VARCHAR(150);
+  ADD COLUMN created_by_email VARCHAR(150);
 
-CREATE INDEX IF NOT EXISTS idx_events_created_by_email ON events(created_by_email);
+CREATE INDEX idx_events_created_by_email ON events(created_by_email);
 
--- Optional backfill if you already have organiser-linked rows and want creator email populated:
+-- Optional MySQL-friendly backfill (JOIN syntax):
 -- UPDATE events e
--- SET created_by_email = o.email
--- FROM organisers o
--- WHERE e.organiser_id = o.id AND e.created_by_email IS NULL;
+-- JOIN organisers o ON e.organiser_id = o.id
+-- SET e.created_by_email = o.email
+-- WHERE e.created_by_email IS NULL;

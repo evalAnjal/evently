@@ -2,7 +2,6 @@
 -- Run after 003_add_created_by_email_to_events.sql
 
 UPDATE events e
-SET created_by_email = o.email
-FROM organisers o
-WHERE e.organiser_id = o.id
-  AND e.created_by_email IS NULL;
+JOIN organisers o ON e.organiser_id = o.id
+SET e.created_by_email = o.email
+WHERE e.created_by_email IS NULL;

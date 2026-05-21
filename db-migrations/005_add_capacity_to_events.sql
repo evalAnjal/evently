@@ -2,4 +2,4 @@
 -- Run after 004_backfill_created_by_email.sql
 
 ALTER TABLE events
-  ADD COLUMN IF NOT EXISTS capacity INTEGER;
+  ADD COLUMN capacity INT;
