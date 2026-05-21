@@ -103,6 +103,15 @@ run_migrations() {
 	fi
 }
 
+run_seeds() {
+	if [ -f "db-migrations/seed_users.sh" ]; then
+		echo "Running idempotent seeds inside $DB_CONTAINER..."
+		docker exec -i "$DB_CONTAINER" bash -s < db-migrations/seed_users.sh || true
+	else
+		echo "No seed script found at db-migrations/seed_users.sh. Skipping."
+	fi
+}
+
 ensure_mysql_connector() {
 	local group_path="$HOME/.m2/repository/com/mysql/mysql-connector-j/$CONNECTOR_VERSION"
 	local jar="$group_path/mysql-connector-j-$CONNECTOR_VERSION.jar"
@@ -138,6 +147,7 @@ start_jetty() {
 # Main flow
 ensure_mysql_container || echo "Warning: MySQL container not available; you can still start the server if you have external DB."
 run_migrations || echo "Migration run returned non-zero (continuing)"
+run_seeds || echo "Seeding returned non-zero (continuing)"
 ensure_mysql_connector || echo "Connector install failed or skipped; ensure connector is available in local maven repo."
 start_jetty
 
