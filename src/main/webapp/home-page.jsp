@@ -393,7 +393,7 @@
 
   <textarea
     name="message"
-    placeholder="Your Message"
+    placeholder="Your Message Please!!"
     rows="2"
     class="p-4 text-sm rounded-lg bg-blue-800 text-white placeholder-blue-300 border border-blue-700 focus:outline-none focus:border-blue-400 resize-none"
     required

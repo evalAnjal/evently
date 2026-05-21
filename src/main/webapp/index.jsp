@@ -23,7 +23,7 @@
 <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
     <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-indigo-600">Evently</h1>
-        <p class="text-gray-500">Welcome back! Please login.</p>
+        <p class="text-gray-500">WELCOME BACK!!!!! PLEASE LOGIN.,</p>
     </div>
 
     <% String successMessage = (String) request.getAttribute("successMessage"); %>
@@ -37,7 +37,7 @@
 
     <form action="/loginProcess" method="POST" class="space-y-6">
         <div>
-            <label class="block text-sm font-medium text-gray-700">Email Address</label>
+            <label class="block text-sm font-medium text-gray-700">EMAIL ADDRESS</label>
             <input type="email" name="email" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
         </div>
         <div>
