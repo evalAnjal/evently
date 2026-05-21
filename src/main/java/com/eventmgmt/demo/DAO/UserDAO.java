@@ -48,27 +48,32 @@ public class UserDAO {
 
     public int registerUserAndGetId(User user) throws SQLException {
         String role = (user.getRole() == null || user.getRole().isBlank()) ? "MEMBER" : user.getRole();
-        String sql = "INSERT INTO users(username,email,password,role,district) VALUES(?,?,?,?,?) RETURNING id";
-        try(Connection conn = DBconnection.getConnection();
-            PreparedStatement st = conn.prepareStatement(sql)){
-                st.setString(1, user.getUsername());
-                st.setString(2, user.getEmail());
-                st.setString(3, user.getPassword());
-                st.setString(4, role);
-                st.setString(5, user.getDistrict());
+        String sql = "INSERT INTO users(username,email,password,role,district) VALUES(?,?,?,?,?)";
+        try (Connection conn = DBconnection.getConnection();
+             PreparedStatement st = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+            st.setString(1, user.getUsername());
+            st.setString(2, user.getEmail());
+            st.setString(3, user.getPassword());
+            st.setString(4, role);
+            st.setString(5, user.getDistrict());
 
-                ResultSet rs = st.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt(1);
+            int rows = st.executeUpdate();
+            try (ResultSet keys = st.getGeneratedKeys()) {
+                if (keys != null && keys.next()) {
+                    return keys.getInt(1);
                 }
-                throw new SQLException("No row inserted for registration.");
-            } catch (SQLException e) {
-                // Backward compatibility for DBs that don't have users.district yet.
-                if ("42703".equals(e.getSQLState())) {
-                    return registerUserWithoutDistrict(user, role);
-                }
-                throw e;
             }
+            if (rows == 0) throw new SQLException("No row inserted for registration.");
+            throw new SQLException("Failed to obtain generated id for registration.");
+        } catch (SQLException e) {
+            // Backward compatibility for DBs that don't have users.district yet.
+            String state = e.getSQLState();
+            String msg = e.getMessage() == null ? "" : e.getMessage();
+            if ("42703".equals(state) || "42S22".equals(state) || msg.contains("Unknown column")) {
+                return registerUserWithoutDistrict(user, role);
+            }
+            throw e;
+        }
     }
 
     // Backward-compatible signature used by older compiled servlets.
@@ -77,18 +82,22 @@ public class UserDAO {
     }
 
     private int registerUserWithoutDistrict(User user, String role) throws SQLException {
-        String sql = "INSERT INTO users(username,email,password,role) VALUES(?,?,?,?) RETURNING id";
+        String sql = "INSERT INTO users(username,email,password,role) VALUES(?,?,?,?)";
         try (Connection conn = DBconnection.getConnection();
-             PreparedStatement st = conn.prepareStatement(sql)) {
+             PreparedStatement st = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, user.getUsername());
             st.setString(2, user.getEmail());
             st.setString(3, user.getPassword());
             st.setString(4, role);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
+
+            int rows = st.executeUpdate();
+            try (ResultSet keys = st.getGeneratedKeys()) {
+                if (keys != null && keys.next()) {
+                    return keys.getInt(1);
+                }
             }
-            throw new SQLException("No row inserted for registration.");
+            if (rows == 0) throw new SQLException("No row inserted for registration.");
+            throw new SQLException("Failed to obtain generated id for registration.");
         }
     }
 
