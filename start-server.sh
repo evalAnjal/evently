@@ -135,7 +135,7 @@ ensure_mysql_connector() {
 }
 
 start_jetty() {
-	export DB_URL="${DB_URL:-jdbc:mysql://localhost:3306/$DB_NAME?useSSL=false&serverTimezone=UTC}"
+	export DB_URL="${DB_URL:-jdbc:mysql://localhost:3306/$DB_NAME?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}"
 	export DB_USER="${DB_USER:-$DB_USER}"
 	export DB_PASS="${DB_PASS:-$DB_PASS}"
 
